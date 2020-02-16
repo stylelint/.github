@@ -1,0 +1,117 @@
+[
+  {
+    "name": "good first issue",
+    "description": "is good for newcomers",
+    "color": "7057ff"
+  },
+  {
+    "name": "help wanted",
+    "description": "is difficult and help is wanted",
+    "color": "b60205"
+  },
+  {
+    "name": "pr: blocked",
+    "description": "is blocked by another issue or pr",
+    "color": "111111"
+  },
+  {
+    "name": "pr: dependencies",
+    "description": "relates to dependencies",
+    "color": "0366d6"
+  },
+  {
+    "name": "pr: needs documentation",
+    "description": "needs documentation adding by the author",
+    "color": "2678BA"
+  },
+  {
+    "name": "pr: needs revision",
+    "description": "needs revision by the author",
+    "color": "D34617"
+  },
+  {
+    "name": "pr: needs tests",
+    "description": "needs tests adding by author",
+    "color": "CA2BAF"
+  },
+  {
+    "name": "priority: high",
+    "description": "is impactful on users",
+    "color": "ffbf11"
+  },
+  {
+    "name": "status: blocked",
+    "description": "is blocked by another issue or pr",
+    "color": "111111"
+  },
+  {
+    "name": "status: needs clarification",
+    "description": "triage needs clarification from author",
+    "color": "051693"
+  },
+  {
+    "name": "status: needs discussion",
+    "description": "triage needs further discussion",
+    "color": "0023ee"
+  },
+  {
+    "name": "status: needs investigation",
+    "description": "triage needs further investigation",
+    "color": "CD4404"
+  },
+  {
+    "name": "status: needs reproducible example",
+    "description": "triage needs reproducible demo or repo",
+    "color": "5a18a5"
+  },
+  {
+    "name": "status: ready to implement",
+    "description": "is ready to be worked on by someone",
+    "color": "008672"
+  },
+  {
+    "name": "status: wip",
+    "description": "is being worked on by someone",
+    "color": "0e8a16"
+  },
+  {
+    "name": "type: bug",
+    "description": "a problem with a feature",
+    "color": "f9d0c4"
+  },
+  {
+    "name": "type: documentation",
+    "description": "an improvement to the documentation",
+    "color": "c5def5"
+  },
+  {
+    "name": "type: enhancement",
+    "description": "a new feature",
+    "color": "d4c5f9"
+  },
+  {
+    "name": "type: infrastructure",
+    "description": "an improvement to devops",
+    "color": "bfdadc"
+  },
+  {
+    "name": "type: refactor",
+    "description": "an improvement to the code structure",
+    "color": "C5EDF5"
+  },
+  {
+    "name": "type: tests",
+    "description": "an improvement to testing",
+    "color": "F5C5EC"
+  },
+  {
+    "name": "type: umbrella",
+    "description": "a group of related issues",
+    "color": "ccea72"
+  },
+  {
+    "name": "upstream",
+    "description": "relates to an upstream package",
+    "color": "28dfe2"
+  }
+]
