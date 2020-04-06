@@ -7,8 +7,8 @@ about: "Is something wrong, confusing or missing in the docs?"
 
 > Clearly describe the documentation issue
 
-e.g. "The description of the `ignoreFiles` option is confusing ..."
+...
 
 > What solution would you like to see?
 
-e.g. "I suggest rewriting it as ..."
+...

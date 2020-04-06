@@ -1,7 +1,6 @@
-<!---
-Except for minor documentation fixes, each pull request must be associated with an open issue. If a corresponding issue does not exist, please stop. Instead, create an issue so we can discuss the change first.
+<!-- Each pull request must be associated with an open issue unless it's a documentation fix. If a corresponding issue does not exist, please create one so we can discuss the change first. -->
 
-If an issue exists, please continue by answering these two questions:  -->
+<!-- Please answer the following. We close pull requests that don't. -->
 
 > Which issue, if any, is this issue related to?
 
