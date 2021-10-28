@@ -9,7 +9,7 @@ body:
   - type: textarea
     id: describe-issue
     attributes:
-      label: "Clearly describe the documentation issue"
+      label: "Describe the documentation issue"
     validations:
       required: true
   - type: textarea
