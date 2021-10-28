@@ -18,7 +18,7 @@ body:
   - type: textarea
     id: describe-bug
     attributes:
-      label: "Clearly describe the bug."
+      label: "Clearly describe the bug"
       description: ""
       placeholder: |
         e.g. "There are false positives for two leading zeros when ..."
