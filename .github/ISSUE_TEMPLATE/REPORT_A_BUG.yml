@@ -1,6 +1,5 @@
 name: "🐛 Report a bug"
 description: "Is something not working as you expect?"
-title: ""
 labels: []
 body:
   - type: markdown
@@ -13,24 +12,18 @@ body:
     id: describe-bug
     attributes:
       label: "Clearly describe the bug"
-      description: ""
-      placeholder: ""
     validations:
       required: true
   - type: textarea
     id: reproduce-bug
     attributes:
       label: "What steps are needed to reproduce the bug?"
-      description: ""
-      placeholder: ""
     validations:
       required: true
   - type: textarea
     id: expected-behavior
     attributes:
       label: "What did you expect to happen?"
-      description: ""
-      placeholder: ""
     validations:
       required: true
   - type: textarea
@@ -38,6 +31,5 @@ body:
     attributes:
       label: "What actually happened?"
       description: "For example, what warnings or errors did you get?"
-      placeholder: ""
     validations:
       required: true
