@@ -8,96 +8,29 @@ body:
       value: |
         Thanks for taking the time to file a bug report!
 
-        Before posting, please check that the bug hasn't already been:
-        * fixed in the next release (read the changelog)
-        * discussed previously (search issues)
-
-        You can help us fix the bug more quickly by:
-        1. Figuring out what needs doing and proposing it.
-        2. Writing the code and submitting a PR once the bug is confirmed.
+        Please answer the following. We close issues that don’t.
   - type: textarea
     id: describe-bug
     attributes:
       label: "Clearly describe the bug"
       description: ""
-      placeholder: |
-        e.g. "There are false positives for two leading zeros when ..."
+      placeholder: ""
     validations:
       required: true
-  - type: textarea
-    id: which-rule
-    attributes:
-      label: "Which rule, if any, is the bug related to?"
-      description: ""
-      placeholder: |
-        e.g. `number-leading-zero`
-    validations:
-      required: false
   - type: textarea
     id: reproduce-bug
     attributes:
-      label: "What code is needed to reproduce the bug?"
+      label: "What steps are needed to reproduce the bug?"
       description: ""
-      placeholder: |
-        e.g.
-
-        ```css
-        a {
-          width: 00.1em;
-        }
-        ```
+      placeholder: ""
     validations:
       required: true
-  - type: textarea
-    id: stylelint-config
-    attributes:
-      label: "What Stylelint configuration is needed to reproduce the bug?"
-      description: ""
-      placeholder: |
-        e.g.
-
-        ```json
-        {
-          "rules": {
-            "number-leading-zero": "always"
-          }
-        }
-        ```
-    validations:
-      required: false
-  - type: input
-    id: stylelint-version
-    attributes:
-      label: "Which version of Stylelint are you using?"
-      description: ""
-      placeholder: "e.g. `14.0.0`"
-    validations:
-      required: true
-  - type: textarea
-    id: how-run-stylelint
-    attributes:
-      label: "How are you running stylelint: CLI, PostCSS plugin, Node.js API?"
-      description: ""
-      placeholder: |
-        e.g. "CLI with `stylelint "**/*.css" --config myconfig.json`"
-    validations:
-      required: true
-  - type: textarea
-    id: non-standard-syntax
-    attributes:
-      label: "Does the bug relate to non-standard syntax (e.g. SCSS, Less etc.)?"
-      description: ""
-      placeholder: |
-        e.g. "Yes, it's related to SCSS nested properties."
-    validations:
-      required: false
   - type: textarea
     id: expected-behavior
     attributes:
       label: "What did you expect to happen?"
       description: ""
-      placeholder: |
-        e.g. "No warnings to be flagged."
+      placeholder: ""
     validations:
       required: true
   - type: textarea
@@ -105,12 +38,6 @@ body:
     attributes:
       label: "What actually happened (e.g. what warnings or errors did you get)?"
       description: ""
-      placeholder: |
-        e.g. "The following warnings were flagged:"
-
-        ```
-        test.css
-        2:4    Expected a leading zero (number-leading-zero)
-        ```
+      placeholder: ""
     validations:
       required: true
