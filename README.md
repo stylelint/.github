@@ -1,6 +1,6 @@
 # .github
 
-Stylelint Org-wide GitHub settings.
+Stylelint org-wide GitHub settings.
 
 ## Syncing labels
 
