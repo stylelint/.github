@@ -5,7 +5,8 @@ on:
     inputs:
       node-version:
         description: Node.js version
-        required: true
+        required: false
+        default: '["12", "14", "16", "18"]'
         type: string
       os:
         description: OS name
