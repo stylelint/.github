@@ -16,7 +16,7 @@ on:
 
 jobs:
   lint:
-    name: Test on Node.js ${{ inputs.node-version }} and ${{ inputs.os }}
+    name: Lint on Node.js ${{ inputs.node-version }} and ${{ inputs.os }}
 
     runs-on: ${{ inputs.os }}
 
