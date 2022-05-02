@@ -9,7 +9,8 @@ on:
         type: string
       os:
         description: OS name
-        required: true
+        required: false
+        default: '["ubuntu-latest"]'
         type: string
 
 jobs:
