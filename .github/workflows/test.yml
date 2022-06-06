@@ -1,0 +1,48 @@
+name: Test
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: Node.js version
+        required: false
+        default: '["12", "14", "16", "18"]'
+        type: string
+      os:
+        description: OS name
+        required: false
+        default: '["ubuntu-latest"]'
+        type: string
+
+jobs:
+  test:
+    name: Test on Node.js ${{ matrix.node-version }} and ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # NOTE: The `strategy` property is not fully supported, so it uses `fromJson()`.
+        #       For details, see https://github.community/t/reusable-workflow-with-strategy-matrix/205676/2
+        node-version: ${{ fromJson(inputs.node-version) }}
+        os: ${{ fromJson(inputs.os) }}
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install latest npm
+        run: npm install --global npm@latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test
+        run: npm test
