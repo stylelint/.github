@@ -41,6 +41,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: npm
 
+      # HACK: See https://github.com/npm/cli/issues/4341
+      - name: Workaround for npm installation failure on Node.js 14 and Windows
+        if: ${{ startsWith(matrix.node-version, '14') && startsWith(matrix.os, 'windows') }}
+        run: npm install --global npm@8.3
+
       - name: Install latest npm
         run: npm install --global npm@latest
 
