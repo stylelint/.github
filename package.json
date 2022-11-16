@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "test": "echo \"Hello, test.\"",
+    "lint": "echo \"Hello, lint.\""
+  }
+}
