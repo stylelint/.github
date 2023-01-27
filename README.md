@@ -11,7 +11,7 @@ You can sync our common labels to a new repository using [github-label-sync](htt
 
 ## Reusable workflows
 
-The following workflows for GitHub Actions allow us to set up CI settings easily:
+The following [reusable workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows) for GitHub Actions allow us to set up CI settings easily:
 
 - [`lint`](.github/workflows/lint.yml)
 - [`test`](.github/workflows/test.yml)
