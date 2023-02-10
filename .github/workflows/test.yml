@@ -13,6 +13,11 @@ on:
         required: false
         default: '["ubuntu-latest"]'
         type: string
+      exclude:
+        description: Exclude from matrix
+        required: false
+        default: '[]'
+        type: string
 
 jobs:
   test:
@@ -25,6 +30,7 @@ jobs:
         #       For details, see https://github.community/t/reusable-workflow-with-strategy-matrix/205676/2
         node-version: ${{ fromJson(inputs.node-version) }}
         os: ${{ fromJson(inputs.os) }}
+        exclude: ${{ fromJson(inputs.exclude) }}
 
     runs-on: ${{ matrix.os }}
 
