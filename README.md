@@ -33,4 +33,5 @@ jobs:
     # with:
     #   node-version: '["16", "18"]'
     #   os: '["ubuntu-latest", "windows-latest"]'
+    #   exclude: '[{"node-version": "16", "os": "windows-latest"}]'
 ```
