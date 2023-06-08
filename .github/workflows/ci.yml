@@ -14,4 +14,4 @@ jobs:
       node-version: '["16", "18", "20"]'
       os: '["ubuntu-latest", "windows-latest", "macos-latest"]'
       exclude: '[{"node-version": "16", "os": "windows-latest"}]'
-      test-options: '--foo --bar'
+      test-options: 'foo bar'
