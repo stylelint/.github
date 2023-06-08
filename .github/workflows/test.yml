@@ -18,6 +18,11 @@ on:
         required: false
         default: '[]'
         type: string
+      test-options:
+        description: Options to pass the test command
+        required: false
+        default: ''
+        type: string
 
 jobs:
   test:
@@ -61,4 +66,4 @@ jobs:
         run: npm ci
 
       - name: Test
-        run: npm test --ignore-scripts
+        run: npm test --ignore-scripts -- ${{ inputs.test-options }}

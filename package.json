@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "echo \"Hello, test.\"",
+    "test": "node -e \"console.log('Hello, test: %s', process.argv)\"",
     "lint": "echo \"Hello, lint.\""
   }
 }
