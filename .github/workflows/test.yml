@@ -59,7 +59,13 @@ jobs:
         if: ${{ startsWith(matrix.node-version, '14') && startsWith(matrix.os, 'windows') }}
         run: npm install --global npm@8.3
 
+      # NOTE: npm v10 has dropped support for Node.js v16.
+      - name: Install npm v9
+        if: ${{ startsWith(matrix.node-version, '16') || startsWith(matrix.node-version, '14') }}
+        run: npm install --global npm@9 && npm --version
+
       - name: Install latest npm
+        if: ${{ !startsWith(matrix.node-version, '16') && !startsWith(matrix.node-version, '14') }}
         run: npm install --global npm@latest && npm --version
 
       - name: Install dependencies
