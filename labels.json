@@ -65,6 +65,11 @@
     "color": "0e8a16"
   },
   {
+    "name": "status: agreed but held",
+    "description": "is agreed on but implementation is held",
+    "color": "617D03"
+  },
+  {
     "name": "type: bug",
     "description": "a problem with a feature or rule",
     "color": "f9d0c4"
@@ -98,6 +103,11 @@
     "name": "type: umbrella",
     "description": "a group of related issues",
     "color": "ccea72"
+  },
+  {
+    "name": "type: security",
+    "description": "a security problem",
+    "color": "B8A8A5"
   },
   {
     "name": "upstream",
