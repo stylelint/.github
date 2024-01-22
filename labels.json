@@ -20,21 +20,6 @@
     "color": "0366d6"
   },
   {
-    "name": "pr: needs documentation",
-    "description": "needs documentation adding by the author",
-    "color": "2678BA"
-  },
-  {
-    "name": "pr: needs revision",
-    "description": "needs revision by the author",
-    "color": "D34617"
-  },
-  {
-    "name": "pr: needs tests",
-    "description": "needs tests adding by author",
-    "color": "CA2BAF"
-  },
-  {
     "name": "priority: high",
     "description": "is impactful on users",
     "color": "ffbf11"
