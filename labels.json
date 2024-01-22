@@ -6,7 +6,7 @@
   },
   {
     "name": "help wanted",
-    "description": "is difficult and help is wanted",
+    "description": "is likely non-trival and help is wanted",
     "color": "b60205"
   },
   {
@@ -18,21 +18,6 @@
     "name": "pr: dependencies",
     "description": "relates to dependencies",
     "color": "0366d6"
-  },
-  {
-    "name": "pr: needs documentation",
-    "description": "needs documentation adding by the author",
-    "color": "2678BA"
-  },
-  {
-    "name": "pr: needs revision",
-    "description": "needs revision by the author",
-    "color": "D34617"
-  },
-  {
-    "name": "pr: needs tests",
-    "description": "needs tests adding by author",
-    "color": "CA2BAF"
   },
   {
     "name": "priority: high",
@@ -65,9 +50,14 @@
     "color": "5a18a5"
   },
   {
-    "name": "status: ask to implement",
+    "name": "status: ready to implement",
     "description": "is ready to be worked on by someone",
     "color": "008672"
+  },
+  {
+    "name": "status: ask to implement",
+    "description": "ask before implementing as may no longer be relevant",
+    "color": "A6E4D9"
   },
   {
     "name": "status: wip",
@@ -76,7 +66,7 @@
   },
   {
     "name": "type: bug",
-    "description": "a problem with a feature",
+    "description": "a problem with a feature or rule",
     "color": "f9d0c4"
   },
   {
@@ -86,7 +76,7 @@
   },
   {
     "name": "type: enhancement",
-    "description": "a new feature",
+    "description": "a new feature that isn't related to rules",
     "color": "d4c5f9"
   },
   {
