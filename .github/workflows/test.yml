@@ -30,15 +30,34 @@ on:
         type: string
 
 jobs:
+  # NOTE: Prevent an empty matrix if `node-version-file` is specified
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      node-version: ${{ steps.init-node-version.outputs.node-version }}
+    steps:
+      - name: Initialize "node-version" parameter
+        id: init-node-version
+        run: |
+          if [[ -n "${node_version_file}" ]]; then
+            node_version='current' # dummy
+          fi
+          echo "node-version=${node_version}" >> "${GITHUB_OUTPUT}"
+        env:
+          node_version: ${{ inputs.node-version }}
+          node_version_file: ${{ inputs.node-version-file }}
+
   test:
-    name: Test on Node.js ${{ matrix.node-version }} and ${{ matrix.os }}
+    needs: prepare
+
+    name: Test on Node.js ${{ inputs.node-version-file || matrix.node-version }} and ${{ matrix.os }}
 
     strategy:
       fail-fast: false
       matrix:
         # NOTE: The `strategy` property is not fully supported, so it uses `fromJson()`.
         #       For details, see https://github.community/t/reusable-workflow-with-strategy-matrix/205676/2
-        node-version: ${{ fromJson(inputs.node-version) }}
+        node-version: ${{ fromJson(needs.prepare.outputs.node-version) }}
         os: ${{ fromJson(inputs.os) }}
         exclude: ${{ fromJson(inputs.exclude) }}
 
@@ -55,12 +74,13 @@ jobs:
 
       - name: Set up Node.js ${{ matrix.node-version }}
         if: ${{ !inputs.node-version-file }}
+        id: setup-node
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
 
-      - name: Set up Node.js from ${{ inputs.node-version-file }}
+      - name: Set up Node.js from ${{ inputs.node-version-file }} file
         if: ${{ inputs.node-version-file }}
         uses: actions/setup-node@v4
         with:
@@ -69,11 +89,11 @@ jobs:
 
       # NOTE: npm v10 has dropped support for Node.js v16.
       - name: Install npm v9
-        if: ${{ startsWith(matrix.node-version, '16') }}
+        if: ${{ startsWith(steps.setup-node.outputs.node-version, '16') }}
         run: npm install --global npm@9 && npm --version
 
       - name: Install latest npm
-        if: ${{ !startsWith(matrix.node-version, '16') }}
+        if: ${{ !startsWith(steps.setup-node.outputs.node-version, '16') }}
         run: npm install --global npm@latest && npm --version
 
       - name: Install dependencies
