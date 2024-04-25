@@ -22,4 +22,4 @@ jobs:
   test-node-version-file:
     uses: ./.github/workflows/test.yml
     with:
-      node-version-file: package.json
+      node-version-file: .node-version
