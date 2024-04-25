@@ -40,7 +40,7 @@ jobs:
         id: init-node-version
         run: |
           if [[ -n "${node_version_file}" ]]; then
-            node_version='current' # dummy
+            node_version='["current"]' # dummy
           fi
           echo "node-version=${node_version}" >> "${GITHUB_OUTPUT}"
         env:
