@@ -11,7 +11,7 @@ jobs:
   test:
     uses: ./.github/workflows/test.yml
     with:
-      node-version: '["16", "18", "20", "current"]'
+      node-version: '["16", "18", "20", "22"]'
       os: '["ubuntu-latest", "windows-latest", "macos-latest"]'
-      exclude: '[{"node-version": "16", "os": "windows-latest"}]'
+      exclude: '[{"node-version": "22", "os": "windows-latest"}]'
       test-options: 'foo bar'
