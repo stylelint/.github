@@ -68,6 +68,12 @@ jobs:
 
     timeout-minutes: 30
 
+    # HACK: The `npm` command fails on Node.js v22 and Windows OS for unknown error. So, this always uses Bash.
+    # See https://github.com/stylelint/.github/pull/35/commits/6f7dc8bd7b597902920c9b571f06fbcce69d0c72
+    defaults:
+      run:
+        shell: bash
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
