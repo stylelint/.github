@@ -8,6 +8,11 @@ on:
         required: false
         default: '["18", "20", "22"]'
         type: string
+      node-version-file:
+        description: Node.js version file
+        required: false
+        default: ''
+        type: string
       os:
         description: OS name
         required: false
@@ -49,9 +54,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Node.js ${{ matrix.node-version }}
+        if: ${{ !inputs.node-version-file }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Set up Node.js from ${{ inputs.node-version-file }}
+        if: ${{ inputs.node-version-file }}
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ${{ inputs.node-version-file }}
           cache: npm
 
       # NOTE: npm v10 has dropped support for Node.js v16.

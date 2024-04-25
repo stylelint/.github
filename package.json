@@ -2,5 +2,8 @@
   "scripts": {
     "test": "node -e \"console.log('Hello, test: %s', process.argv)\"",
     "lint": "echo \"Hello, lint.\""
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }

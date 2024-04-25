@@ -18,3 +18,8 @@ jobs:
 
   test-default:
     uses: ./.github/workflows/test.yml
+
+  test-node-version-file:
+    uses: ./.github/workflows/test.yml
+    with:
+      node-version-file: package.json
