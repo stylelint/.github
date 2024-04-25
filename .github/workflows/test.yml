@@ -6,7 +6,7 @@ on:
       node-version:
         description: Node.js version
         required: false
-        default: '["18", "20", "current"]'
+        default: '["18", "20", "22"]'
         type: string
       os:
         description: OS name
