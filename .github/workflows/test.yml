@@ -97,11 +97,15 @@ jobs:
       # NOTE: npm v10 has dropped support for Node.js v16.
       - name: Install npm v9
         if: ${{ startsWith(steps.node-version.outputs.value, 'v16') }}
-        run: npm install --global npm@9 && npm --version
+        run: |
+          npm install --global npm@9
+          echo "npm: $(npm --version)"
 
       - name: Install latest npm
         if: ${{ !startsWith(steps.node-version.outputs.value, 'v16') }}
-        run: npm install --global npm@latest && npm --version
+        run: |
+          npm install --global npm@latest
+          echo "npm: $(npm --version)"
 
       - name: Install dependencies
         run: npm ci
