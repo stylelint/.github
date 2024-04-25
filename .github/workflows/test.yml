@@ -82,10 +82,15 @@ jobs:
 
       - name: Set up Node.js from ${{ inputs.node-version-file }} file
         if: ${{ inputs.node-version-file }}
+        id: setup-node-file
         uses: actions/setup-node@v4
         with:
           node-version-file: ${{ inputs.node-version-file }}
           cache: npm
+
+      - run: |
+          echo "${{ steps.setup-node.outputs.node-version }}"
+          echo "${{ steps.setup-node-file.outputs.node-version }}"
 
       # NOTE: npm v10 has dropped support for Node.js v16.
       - name: Install npm v9
