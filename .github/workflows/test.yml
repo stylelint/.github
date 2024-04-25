@@ -90,6 +90,7 @@ jobs:
 
       - name: Detect Node.js version
         id: node-version
+        shell: bash
         run: echo "value=${node_version}" >> "${GITHUB_OUTPUT}"
         env:
           node_version: ${{ steps.setup-node-file.outputs.node-version || steps.setup-node.outputs.node-version }}
