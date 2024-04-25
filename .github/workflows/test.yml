@@ -88,17 +88,19 @@ jobs:
           node-version-file: ${{ inputs.node-version-file }}
           cache: npm
 
-      - run: |
-          echo "${{ steps.setup-node.outputs.node-version }}"
-          echo "${{ steps.setup-node-file.outputs.node-version }}"
+      - name: Detect Node.js version
+        id: node-version
+        run: echo "value=${node_version}" >> "${GITHUB_OUTPUT}"
+        env:
+          node_version: ${{ steps.setup-node-file.outputs.node-version || steps.setup-node.outputs.node-version }}
 
       # NOTE: npm v10 has dropped support for Node.js v16.
       - name: Install npm v9
-        if: ${{ startsWith(steps.setup-node.outputs.node-version, '16') }}
+        if: ${{ startsWith(steps.node-version.outputs.value, 'v16') }}
         run: npm install --global npm@9 && npm --version
 
       - name: Install latest npm
-        if: ${{ !startsWith(steps.setup-node.outputs.node-version, '16') }}
+        if: ${{ !startsWith(steps.node-version.outputs.value, 'v16') }}
         run: npm install --global npm@latest && npm --version
 
       - name: Install dependencies
