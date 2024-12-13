@@ -57,7 +57,7 @@
   {
     "name": "status: ask to implement",
     "description": "ask before implementing as may no longer be relevant",
-    "color": "A6E4D9"
+    "color": "006B75"
   },
   {
     "name": "status: wip",
@@ -70,48 +70,8 @@
     "color": "617D03"
   },
   {
-    "name": "type: bug",
-    "description": "a problem with a feature or rule",
-    "color": "f9d0c4"
-  },
-  {
-    "name": "type: documentation",
-    "description": "an improvement to the documentation",
-    "color": "c5def5"
-  },
-  {
-    "name": "type: enhancement",
-    "description": "a new feature that isn't related to rules",
-    "color": "d4c5f9"
-  },
-  {
-    "name": "type: infrastructure",
-    "description": "an improvement to devops",
-    "color": "bfdadc"
-  },
-  {
-    "name": "type: refactor",
-    "description": "an improvement to the code structure",
-    "color": "C5EDF5"
-  },
-  {
-    "name": "type: tests",
-    "description": "an improvement to testing",
-    "color": "F5C5EC"
-  },
-  {
-    "name": "type: umbrella",
-    "description": "a group of related issues",
-    "color": "ccea72"
-  },
-  {
-    "name": "type: security",
-    "description": "a security problem",
-    "color": "B8A8A5"
-  },
-  {
     "name": "upstream",
     "description": "relates to an upstream package",
-    "color": "28dfe2"
+    "color": "972AC5"
   }
 ]
