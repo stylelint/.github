@@ -116,7 +116,7 @@ jobs:
           echo "npm: $(npm --version)"
 
       - name: Install latest npm
-        if: ${{ !startsWith(steps.node-version.outputs.value, 'v16') }}
+        if: ${{ !startsWith(steps.node-version.outputs.value, 'v16') || !startsWith(steps.node-version.outputs.value, 'v18') }}
         run: |
           npm install --global npm@latest
           echo "npm: $(npm --version)"
