@@ -108,6 +108,13 @@ jobs:
           npm install --global npm@9
           echo "npm: $(npm --version)"
 
+      # NOTE: npm v11 has dropped support for Node.js v18.
+      - name: Install npm v10
+        if: ${{ startsWith(steps.node-version.outputs.value, 'v18') }}
+        run: |
+          npm install --global npm@10
+          echo "npm: $(npm --version)"
+
       - name: Install latest npm
         if: ${{ !startsWith(steps.node-version.outputs.value, 'v16') }}
         run: |
