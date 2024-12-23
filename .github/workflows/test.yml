@@ -113,7 +113,8 @@ jobs:
           npm_version: ${{ steps.npm-version.outputs.version }}
         run: |
           npm install --global "npm@${npm_version}"
-          echo "Successfully installed npm@${npm_version}"
+          echo ""
+          echo "Successfully installed npm ${npm_version}:"
           npm version
 
       - name: Install dependencies
