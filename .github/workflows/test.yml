@@ -95,7 +95,7 @@ jobs:
         env:
           node_version: ${{ steps.setup-node-file.outputs.node-version || steps.setup-node.outputs.node-version }}
 
-      - name: Get npm version to be installed
+      - name: Detect npm version
         id: npm-version
         shell: bash
         env:
