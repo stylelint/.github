@@ -68,12 +68,6 @@ jobs:
 
     timeout-minutes: 30
 
-    # HACK: The `npm` command fails on Node.js v22 and Windows OS for unknown error. So, this always uses Bash.
-    # See https://github.com/stylelint/.github/pull/35/commits/6f7dc8bd7b597902920c9b571f06fbcce69d0c72
-    defaults:
-      run:
-        shell: bash
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -97,29 +91,29 @@ jobs:
       - name: Detect Node.js version
         id: node-version
         shell: bash
-        run: echo "value=${node_version}" >> "${GITHUB_OUTPUT}"
+        run: echo "version=${node_version}" >> "${GITHUB_OUTPUT}"
         env:
           node_version: ${{ steps.setup-node-file.outputs.node-version || steps.setup-node.outputs.node-version }}
 
-      # NOTE: npm v10 has dropped support for Node.js v16.
-      - name: Install npm v9
-        if: ${{ startsWith(steps.node-version.outputs.value, 'v16') }}
+      - name: Detect npm version
+        id: npm-version
+        shell: bash
+        env:
+          node_version: ${{ steps.node-version.outputs.version }}
         run: |
-          npm install --global npm@9
-          echo "npm: $(npm --version)"
+          case "${node_version}" in
+            v16*) echo '9' ;;
+            v18*) echo '10' ;;
+               *) echo 'latest' ;;
+          esac | xargs -I {} echo "version={}" >> "${GITHUB_OUTPUT}"
 
-      # NOTE: npm v11 has dropped support for Node.js v18.
-      - name: Install npm v10
-        if: ${{ startsWith(steps.node-version.outputs.value, 'v18') }}
+      - name: Install npm ${{ steps.npm-version.outputs.version }}
+        shell: bash
+        env:
+          npm_version: ${{ steps.npm-version.outputs.version }}
         run: |
-          npm install --global npm@10
-          echo "npm: $(npm --version)"
-
-      - name: Install latest npm
-        if: ${{ !startsWith(steps.node-version.outputs.value, 'v16') && !startsWith(steps.node-version.outputs.value, 'v18') }}
-        run: |
-          npm install --global npm@latest
-          echo "npm: $(npm --version)"
+          npm install --global "npm@${npm_version}"
+          echo "Successfully installed npm $(npm --version)"
 
       - name: Install dependencies
         run: npm ci
