@@ -4,6 +4,8 @@ on:
   push:
   workflow_dispatch:
 
+permissions: read-all # Default. Each job can override this.
+
 jobs:
   lint:
     uses: ./.github/workflows/lint.yml
