@@ -35,6 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       node-version: ${{ steps.init-node-version.outputs.node-version }}
+    permissions: {} # disable all
     steps:
       - name: Initialize "node-version" parameter
         id: init-node-version

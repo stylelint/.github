@@ -4,6 +4,8 @@ on:
   push:
   workflow_dispatch:
 
+permissions: {} # disable all by default
+
 jobs:
   lint:
     uses: ./.github/workflows/lint.yml
