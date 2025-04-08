@@ -4,7 +4,7 @@ on:
   push:
   workflow_dispatch:
 
-permissions: {} # disable all by default
+permissions: read-all # Default. Each job can override this.
 
 jobs:
   lint:
