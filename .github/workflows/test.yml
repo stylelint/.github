@@ -6,7 +6,7 @@ on:
       node-version:
         description: Node.js version
         required: false
-        default: '["18", "20", "22", "24"]'
+        default: '["20", "22", "24"]' # https://endoflife.date/nodejs
         type: string
       node-version-file:
         description: Node.js version file
