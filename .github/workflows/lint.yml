@@ -8,7 +8,7 @@ on:
       node-version:
         description: Node.js version
         required: false
-        default: "lts/*"
+        default: 'lts/*'
         type: string
       os:
         description: OS name

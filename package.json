@@ -1,6 +1,15 @@
 {
+  "name": "@stylelint/.github",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "node -e \"console.log('Hello, test: %s', process.argv)\"",
-    "lint": "echo \"Hello, lint.\""
+    "format": "prettier --write .",
+    "lint": "prettier --check .",
+    "test": "node -e \"console.log('Hello, test: %s', process.argv)\""
+  },
+  "prettier": "@stylelint/prettier-config",
+  "devDependencies": {
+    "@stylelint/prettier-config": "^3.0.0",
+    "prettier": "^3.6.2"
   }
 }
