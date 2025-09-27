@@ -8,10 +8,10 @@ permissions: read-all # Default. Each job can override this.
 
 jobs:
   lint:
-    uses: ./.github/workflows/lint.yml
+    uses: ./.github/workflows/call-lint.yml
 
   test:
-    uses: ./.github/workflows/test.yml
+    uses: ./.github/workflows/call-test.yml
     with:
       node-version: '["22", "24"]'
       os: '["ubuntu-latest", "windows-latest", "macos-latest"]'
@@ -20,12 +20,20 @@ jobs:
           {"node-version": "22", "os": "windows-latest"},
           {"node-version": "24", "os": "macos-latest"}
         ]
-      test-options: 'foo bar'
+      test-options: "foo bar"
 
   test-default:
-    uses: ./.github/workflows/test.yml
+    uses: ./.github/workflows/call-test.yml
 
   test-node-version-file:
-    uses: ./.github/workflows/test.yml
+    uses: ./.github/workflows/call-test.yml
     with:
       node-version-file: .node-version
+
+  # TODO: Remove these deprecated jobs after confirming no usage.
+  lint-deprecated:
+    name: Lint (deprecated)
+    uses: ./.github/workflows/lint.yml
+  test-deprecated:
+    name: Test (deprecated)
+    uses: ./.github/workflows/test.yml

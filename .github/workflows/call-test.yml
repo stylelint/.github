@@ -1,6 +1,4 @@
-# Deprecated. Use `call-test.yml` instead.
-# TODO: Remove this file after confirming no usage.
-name: Test
+name: Test (callable)
 
 on:
   workflow_call:
@@ -38,10 +36,10 @@ jobs:
     outputs:
       node-version: ${{ steps.init-node-version.outputs.node-version }}
     permissions: {} # disable all
+    defaults:
+      run:
+        shell: bash
     steps:
-      - name: Show deprecation warning
-        run: echo "::warning::This workflow 'test.yml' is deprecated. Use 'call-test.yml' instead."
-
       - name: Initialize "node-version" parameter
         id: init-node-version
         run: |
@@ -74,6 +72,10 @@ jobs:
 
     timeout-minutes: 30
 
+    defaults:
+      run:
+        shell: bash
+
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -96,14 +98,12 @@ jobs:
 
       - name: Detect Node.js version
         id: node-version
-        shell: bash
         run: echo "version=${node_version}" >> "${GITHUB_OUTPUT}"
         env:
           node_version: ${{ steps.setup-node-file.outputs.node-version || steps.setup-node.outputs.node-version }}
 
       - name: Detect npm version
         id: npm-version
-        shell: bash
         env:
           node_version: ${{ steps.node-version.outputs.version }}
         run: |
@@ -114,7 +114,6 @@ jobs:
           esac | xargs -I {} echo "version={}" >> "${GITHUB_OUTPUT}"
 
       - name: Install npm ${{ steps.npm-version.outputs.version }}
-        shell: bash
         env:
           npm_version: ${{ steps.npm-version.outputs.version }}
         run: |
