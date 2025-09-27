@@ -15,6 +15,8 @@ The following [reusable workflows](https://docs.github.com/en/actions/using-work
 
 - [`lint`](.github/workflows/call-lint.yml)
 - [`test`](.github/workflows/call-test.yml)
+- [`release-pr`](.github/workflows/call-release-pr.yml)
+- [`release`](.github/workflows/call-release.yml)
 
 Usage:
 
@@ -35,4 +37,16 @@ jobs:
     #   os: '["ubuntu-latest", "windows-latest"]'
     #   exclude: '[{"node-version": "16", "os": "windows-latest"}]'
     #   test-options: '--foo --bar'
+
+  release-pr:
+    uses: stylelint/.github/.github/workflows/call-release-pr.yml@3ba9ed961fcf158d128b77ad87371c25f8784a45 # main
+    with:
+      new-version: ${{ github.event.inputs.new-version }}
+
+  release:
+    uses: stylelint/.github/.github/workflows/call-release.yml@3ba9ed961fcf158d128b77ad87371c25f8784a45 # main
+    # Specify values different from the defaults.
+    # with:
+    #   publish: false
+    #   draft: false
 ```

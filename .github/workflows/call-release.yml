@@ -1,0 +1,85 @@
+name: Release (callable)
+
+on:
+  workflow_call:
+    inputs:
+      publish:
+        description: Set true if publishing to npm registry
+        required: false
+        default: true
+        type: boolean
+      draft:
+        description: Set true if creating draft release
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  release:
+    # Only when a PR with a branch name starting with `release/` is merged.
+    # For the branch name convention, see `call-release-pr.yml`.
+    if: |
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'release/')
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      id-token: write # Required for OIDC. See https://docs.npmjs.com/trusted-publishers
+
+    timeout-minutes: 10
+
+    concurrency: ${{ github.workflow }}
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Set up Node.js LTS
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: 'lts/*'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install latest npm
+        run: npm install --global npm@latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create tag
+        id: create-tag
+        env:
+          PR_HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          # Check if the package version matches the branch name
+          PKG_VERSION=$(jq -r '.version' package.json)
+          if [[ "${PR_HEAD_BRANCH}" != "release/${PKG_VERSION}" ]]; then
+            echo "::error::The version '${PKG_VERSION}' in package.json does not match the version in the branch name '${PR_HEAD_BRANCH}'."
+            exit 1
+          fi
+
+          # Create and push tag
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
+          git tag "${PKG_VERSION}"
+          git push origin "${PKG_VERSION}"
+          echo "new-tag=${PKG_VERSION}" >> "${GITHUB_OUTPUT}"
+
+      - name: Publish to npm registry
+        if: ${{ inputs.publish }}
+        run: |
+          npm publish
+          package_name=$(jq -r '.name' package.json)
+          echo "::notice::Published https://www.npmjs.com/package/${package_name}"
+
+      - name: Create GitHub release
+        uses: stylelint/changelog-to-github-release-action@8526eab6046b8f5b2f883844d953b5eb6f80e674 # 0.5.1
+        with:
+          tag: ${{ steps.create-tag.outputs.new-tag }}
+          draft: ${{ inputs.draft }}
