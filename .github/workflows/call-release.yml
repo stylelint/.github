@@ -8,11 +8,6 @@ on:
         required: false
         default: true
         type: boolean
-      draft:
-        description: Set true if creating draft release
-        required: false
-        default: true
-        type: boolean
 
 jobs:
   release:
@@ -30,10 +25,10 @@ jobs:
 
     timeout-minutes: 10
 
-    # Ensure only one release job runs at a time to avoid conflicts.
-    concurrency:
-      group: ${{ github.workflow }}
-      cancel-in-progress: true
+    # Require manual approval before publishing.
+    # See https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/control-deployments
+    environment: npm
+    concurrency: npm
 
     defaults:
       run:
@@ -85,4 +80,4 @@ jobs:
         uses: stylelint/changelog-to-github-release-action@8526eab6046b8f5b2f883844d953b5eb6f80e674 # 0.5.1
         with:
           tag: ${{ steps.create-tag.outputs.new-tag }}
-          draft: ${{ inputs.draft }}
+          draft: true

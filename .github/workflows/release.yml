@@ -10,6 +10,5 @@ jobs:
     uses: ./.github/workflows/call-release.yml
     with:
       publish: false
-      draft: false
     permissions:
       contents: write

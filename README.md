@@ -48,5 +48,4 @@ jobs:
     # Specify values different from the defaults.
     # with:
     #   publish: false
-    #   draft: false
 ```
