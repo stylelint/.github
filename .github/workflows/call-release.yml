@@ -30,7 +30,10 @@ jobs:
 
     timeout-minutes: 10
 
-    concurrency: ${{ github.workflow }}
+    # Ensure only one release job runs at a time to avoid conflicts.
+    concurrency:
+      group: ${{ github.workflow }}
+      cancel-in-progress: true
 
     defaults:
       run:
