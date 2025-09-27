@@ -1,5 +1,5 @@
-name: "🚀 Request a feature"
-description: "Do you want to suggest a new feature?"
+name: '🚀 Request a feature'
+description: 'Do you want to suggest a new feature?'
 labels: []
 body:
   - type: markdown
@@ -15,6 +15,6 @@ body:
   - type: textarea
     id: what-solution
     attributes:
-      label: "What solution would you like to see?"
+      label: 'What solution would you like to see?'
     validations:
       required: true

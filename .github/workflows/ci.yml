@@ -20,7 +20,7 @@ jobs:
           {"node-version": "22", "os": "windows-latest"},
           {"node-version": "24", "os": "macos-latest"}
         ]
-      test-options: "foo bar"
+      test-options: 'foo bar'
 
   test-default:
     uses: ./.github/workflows/call-test.yml
