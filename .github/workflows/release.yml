@@ -1,0 +1,14 @@
+name: Release
+
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+jobs:
+  release:
+    uses: ./.github/workflows/call-release.yml
+    with:
+      publish: false
+    permissions:
+      contents: write
