@@ -75,6 +75,7 @@ jobs:
           git push origin "${BRANCH_NAME}"
 
           # Construct a changes URL
+          echo -n "Constructing a changes URL... "
           LATEST_TAG=$(gh release list --limit 1 --json 'tagName' --jq '.[0].tagName')
           if [[ -n "${LATEST_TAG}" ]]; then
             CHANGES_FROM="${LATEST_TAG}"
@@ -82,13 +83,16 @@ jobs:
             CHANGES_FROM='@{1year}'
           fi
           CHANGES_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/${CHANGES_FROM}...${BRANCH_NAME}"
+          echo "${CHANGES_URL}"
 
-          # Construct npm package URL if it is not private
+          # Construct a npm package URL if it is not private
+          echo -n "Constructing a npm package URL... "
           if [[ "${PKG_PRIVATE}" != "true" ]]; then
             NPM_PACKAGE_URL="<https://www.npmjs.com/package/${PKG_NAME}>"
           else
-            NPM_PACKAGE_URL="*N/A*"
+            NPM_PACKAGE_URL="N/A"
           fi
+          echo "${NPM_PACKAGE_URL}"
 
           # Prepare PR body
           PR_BODY_FILE="${RUNNER_TEMP}/pr_body.txt"
@@ -102,6 +106,7 @@ jobs:
           - [ ] Quickly review the changes on the URL above.
           - [ ] The new version is expected.
           - [ ] The CHANGELOG.md is expected. If necessary, update it.
+          - [ ] Request a review from the owners team.
 
           If the PR is approved and all checks have passed, you can merge it.
           Then, the release will be automatically started.
@@ -111,12 +116,12 @@ jobs:
           EOF
 
           # Create PR
+          echo "Creating a pull request..."
           gh pr create \
             --head "${BRANCH_NAME}" \
             --title "${COMMIT_MESSAGE}" \
             --body-file "${PR_BODY_FILE}" \
-            --assignee "${GITHUB_ACTOR}" \
-            --reviewer '@stylelint/owners' # Explicitly request review from the owners team
+            --assignee "${GITHUB_ACTOR}"
 
           # Show PR URL
           PR_URL=$(gh pr view --json 'url' --jq '.url')
