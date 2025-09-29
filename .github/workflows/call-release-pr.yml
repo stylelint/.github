@@ -90,7 +90,7 @@ jobs:
           if [[ "${PKG_PRIVATE}" != "true" ]]; then
             NPM_PACKAGE_URL="<https://www.npmjs.com/package/${PKG_NAME}>"
           else
-            NPM_PACKAGE_URL="*N/A*"
+            NPM_PACKAGE_URL="N/A"
           fi
           echo "${NPM_PACKAGE_URL}"
 
