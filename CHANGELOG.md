@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Added: `new-version-command`/`pre-commit-command` inputs to `call-release-pr` workflow.
+- Added: `new-version-command` input to `call-release-pr` workflow.
 - Added: `new-version`/`pr-branch`/`pr-url` outputs to `call-release-pr` workflow.
 
 ## 0.2.1 - 2025-10-01

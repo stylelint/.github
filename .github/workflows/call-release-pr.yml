@@ -11,10 +11,6 @@ on:
         description: Command to determine a new version (priority over `new-version` if specified)
         required: false
         type: string
-      pre-commit-command:
-        description: Command to run before committing changes (e.g., changelog generation, etc.)
-        required: false
-        type: string
       node-version:
         description: Node.js version
         required: false
@@ -87,14 +83,6 @@ jobs:
           pkg-name=$(jq -r '.name' package.json)
           pkg-private=$(jq -r 'select(.private == true) | "true"' package.json)
           EOF
-
-      - name: Run pre-commit command
-        if: ${{ github.event.inputs.pre-commit-command }}
-        env:
-          PRE_COMMIT_COMMAND: ${{ github.event.inputs.pre-commit-command }}
-        run: |
-          echo "Running the pre-commit command: \`${PRE_COMMIT_COMMAND}\`"
-          eval "${PRE_COMMIT_COMMAND}"
 
       - name: Create pull request
         id: create-pr
