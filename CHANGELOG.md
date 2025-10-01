@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.3.0 - 2025-10-01
 
 - Added: `new-version-command` input to `call-release-pr` workflow.
 - Added: `new-version`/`pr-branch`/`pr-url` outputs to `call-release-pr` workflow.
