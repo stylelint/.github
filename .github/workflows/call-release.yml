@@ -38,6 +38,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
+      - name: Get version
+        id: get-version
+        env:
+          PR_HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          # Check if the package version matches the branch name
+          PKG_VERSION=$(jq -r '.version' package.json)
+          if [[ "${PR_HEAD_BRANCH}" == "release/${PKG_VERSION}" ]]; then
+            echo "version=${PKG_VERSION}" >> "${GITHUB_OUTPUT}"
+          else
+            echo "::error::The version '${PKG_VERSION}' in package.json does not match the version in the branch name '${PR_HEAD_BRANCH}'."
+            exit 1
+          fi
+
       - name: Set up Node.js LTS
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
@@ -50,25 +64,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Create tag
-        id: create-tag
-        env:
-          PR_HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
-        run: |
-          # Check if the package version matches the branch name
-          PKG_VERSION=$(jq -r '.version' package.json)
-          if [[ "${PR_HEAD_BRANCH}" != "release/${PKG_VERSION}" ]]; then
-            echo "::error::The version '${PKG_VERSION}' in package.json does not match the version in the branch name '${PR_HEAD_BRANCH}'."
-            exit 1
-          fi
-
-          # Create and push tag
-          git config user.name "${GITHUB_ACTOR}"
-          git config user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
-          git tag "${PKG_VERSION}"
-          git push origin "${PKG_VERSION}"
-          echo "new-tag=${PKG_VERSION}" >> "${GITHUB_OUTPUT}"
-
       - name: Publish to npm registry
         if: ${{ inputs.publish }}
         run: |
@@ -79,5 +74,5 @@ jobs:
       - name: Create GitHub release
         uses: stylelint/changelog-to-github-release-action@8526eab6046b8f5b2f883844d953b5eb6f80e674 # 0.5.1
         with:
-          tag: ${{ steps.create-tag.outputs.new-tag }}
+          tag: ${{ steps.get-version.outputs.version }}
           draft: true

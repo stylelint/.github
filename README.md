@@ -56,6 +56,7 @@ To perform releasing in a repository with the shareable workflows, take the foll
 
 Prerequisites:
 
+- Must follow the release branch name pattern `release/{version}`, e.g., `release/1.0.0`.
 - Must import the branch and tag [rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets).
 - Must set up the `npm` [environment](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments).
 
