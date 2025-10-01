@@ -75,13 +75,13 @@ jobs:
             echo "Determined a new version: ${NEW_VERSION}"
           elsif [[ -n "${NEW_VERSION}" ]]; then
             echo "Use the provided new version: ${NEW_VERSION}"
+            npm version "${NEW_VERSION}" --no-git-tag-version
           else
             echo "::error::Either `new-version` or `new-version-command` input is required."
             exit 1
           fi
 
-          # Set the new version
-          npm version "${NEW_VERSION}" --no-git-tag-version
+          # Output the new version and other package info for later steps
           cat <<EOF >> "${GITHUB_OUTPUT}"
           pkg-version=$(jq -r '.version' package.json)
           pkg-name=$(jq -r '.name' package.json)
