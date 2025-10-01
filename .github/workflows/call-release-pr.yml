@@ -64,16 +64,15 @@ jobs:
           NEW_VERSION: ${{ github.event.inputs.new-version }}
           NEW_VERSION_COMMAND: ${{ github.event.inputs.new-version-command }}
         run: |
-          # Determine a new version if a command is provided
+          # Set a new version if a command is provided
           if [[ -n "${NEW_VERSION_COMMAND}" ]]; then
-            echo "Determining a new version using the command: \`${NEW_VERSION_COMMAND}\`"
-            NEW_VERSION=$(eval "${NEW_VERSION_COMMAND}")
-            echo "Determined a new version: ${NEW_VERSION}"
-          elsif [[ -n "${NEW_VERSION}" ]]; then
+            echo "Setting a new version using the command: \`${NEW_VERSION_COMMAND}\`"
+            eval "${NEW_VERSION_COMMAND}"
+          elif [[ -n "${NEW_VERSION}" ]]; then
             echo "Use the provided new version: ${NEW_VERSION}"
             npm version "${NEW_VERSION}" --no-git-tag-version
           else
-            echo "::error::Either `new-version` or `new-version-command` input is required."
+            echo "::error::Either \`new-version\` or \`new-version-command\` input is required."
             exit 1
           fi
 
