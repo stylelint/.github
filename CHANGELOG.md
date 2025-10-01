@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Added: `new-version-command`/`pre-commit-command` inputs to `call-release-pr` workflow.
+- Added: `new-version`/`pr-branch`/`pr-url` outputs to `call-release-pr` workflow.
+
 ## 0.2.1 - 2025-10-01
 
 - Fixed: release PR body in `call-release-pr` workflow to help understand instructions.

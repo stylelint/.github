@@ -5,7 +5,15 @@ on:
     inputs:
       new-version:
         description: New version to release
-        required: true
+        required: false
+        type: string
+      new-version-command:
+        description: Command to determine a new version (priority over `new-version` if specified)
+        required: false
+        type: string
+      pre-commit-command:
+        description: Command to run before committing changes (e.g., changelog generation, etc.)
+        required: false
         type: string
       node-version:
         description: Node.js version
@@ -32,6 +40,11 @@ jobs:
       run:
         shell: bash
 
+    outputs:
+      new-version: ${{ steps.bump-version.outputs.pkg-version }}
+      pr-branch: ${{ steps.create-pr.outputs.pr-branch }}
+      pr-url: ${{ steps.create-pr.outputs.pr-url }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -53,7 +66,21 @@ jobs:
         id: bump-version
         env:
           NEW_VERSION: ${{ github.event.inputs.new-version }}
+          NEW_VERSION_COMMAND: ${{ github.event.inputs.new-version-command }}
         run: |
+          # Determine a new version if a command is provided
+          if [[ -n "${NEW_VERSION_COMMAND}" ]]; then
+            echo "Determining a new version using the command: \`${NEW_VERSION_COMMAND}\`"
+            NEW_VERSION=$(eval "${NEW_VERSION_COMMAND}")
+            echo "Determined a new version: ${NEW_VERSION}"
+          elsif [[ -n "${NEW_VERSION}" ]]; then
+            echo "Use the provided new version: ${NEW_VERSION}"
+          else
+            echo "::error::Either `new-version` or `new-version-command` input is required."
+            exit 1
+          fi
+
+          # Set the new version
           npm version "${NEW_VERSION}" --no-git-tag-version
           cat <<EOF >> "${GITHUB_OUTPUT}"
           pkg-version=$(jq -r '.version' package.json)
@@ -61,7 +88,16 @@ jobs:
           pkg-private=$(jq -r 'select(.private == true) | "true"' package.json)
           EOF
 
+      - name: Run pre-commit command
+        if: ${{ github.event.inputs.pre-commit-command }}
+        env:
+          PRE_COMMIT_COMMAND: ${{ github.event.inputs.pre-commit-command }}
+        run: |
+          echo "Running the pre-commit command: \`${PRE_COMMIT_COMMAND}\`"
+          eval "${PRE_COMMIT_COMMAND}"
+
       - name: Create pull request
+        id: create-pr
         env:
           GH_TOKEN: ${{ github.token }}
           PKG_VERSION: ${{ steps.bump-version.outputs.pkg-version }}
@@ -78,6 +114,7 @@ jobs:
           git checkout -b "${BRANCH_NAME}"
           git commit --all -am "${COMMIT_MESSAGE}"
           git push origin "${BRANCH_NAME}"
+          echo "pr-branch=${BRANCH_NAME}" >> "${GITHUB_OUTPUT}"
 
           # Construct a changes URL
           echo -n "Constructing a changes URL... "
@@ -130,3 +167,4 @@ jobs:
           # Show PR URL
           PR_URL=$(gh pr view --json 'url' --jq '.url')
           echo "::notice::Created pull request for releasing ${PKG_VERSION}: ${PR_URL}"
+          echo "pr-url=${PR_URL}" >> "${GITHUB_OUTPUT}"
