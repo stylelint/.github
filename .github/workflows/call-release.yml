@@ -8,6 +8,11 @@ on:
         required: false
         default: true
         type: boolean
+      node-version:
+        description: Node.js version
+        required: false
+        default: 'lts/*'
+        type: string
 
 jobs:
   release:
@@ -52,10 +57,10 @@ jobs:
             exit 1
           fi
 
-      - name: Set up Node.js LTS
+      - name: Set up Node.js ${{ inputs.node-version }}
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
-          node-version: 'lts/*'
+          node-version: ${{ inputs.node-version }}
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install latest npm

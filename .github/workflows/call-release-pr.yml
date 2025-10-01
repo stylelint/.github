@@ -7,6 +7,11 @@ on:
         description: New version to release
         required: true
         type: string
+      node-version:
+        description: Node.js version
+        required: false
+        default: 'lts/*'
+        type: string
 
 jobs:
   release-pr:
@@ -33,10 +38,10 @@ jobs:
         with:
           fetch-depth: 0 # Commit history may be required, such as changelog generation etc.
 
-      - name: Set up Node.js LTS
+      - name: Set up Node.js ${{ inputs.node-version }}
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
-          node-version: 'lts/*'
+          node-version: ${{ inputs.node-version }}
 
       - name: Install latest npm
         run: npm install --global npm@latest
