@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fixed: release PR body in `call-release-pr` workflow to help understand instructions .
+
 ## 0.2.0 - 2025-10-01
 
 - Added: `node-version` input to `call-release` and `call-release-pr` workflows.
