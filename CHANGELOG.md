@@ -1,8 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.2.1 - 2025-10-01
 
-- Fixed: release PR body in `call-release-pr` workflow to help understand instructions .
+- Fixed: release PR body in `call-release-pr` workflow to help understand instructions.
 
 ## 0.2.0 - 2025-10-01
 
