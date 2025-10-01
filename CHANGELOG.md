@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.0 - 2025-10-01
 
 - Added: `node-version` input to `call-release` and `call-release-pr` workflows.
 
