@@ -60,13 +60,4 @@ Prerequisites:
 - Must import the branch and tag [rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets).
 - Must set up the `npm` [environment](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments).
 
-Steps:
-
-1. A releaser triggers the `release-pr` workflow.
-2. A release PR is automatically created.
-3. Owners review and merge the PR.
-4. The `release` workflow automatically starts.
-5. Owners with publishing access approve the pending `release` job.
-6. A package is automatically published to npm.
-7. A draft GitHub release is automatically created.
-8. A releaser reviews and publishes the draft release.
+Then follow the [release steps from the `stylelint/stylelint` repo](https://github.com/stylelint/stylelint/blob/main/docs/maintainer-guide/releases.md). Only owners can review and merge the PR, and only owners with publishing access can approve the pending `release` job.
