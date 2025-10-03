@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Removed: deprecated `lint` and `test` callable workflows.
+
 ## 0.3.1 - 2025-10-03
 
 - Fixed: incorrect `new-version`/`new-version-command` input references in `call-release-pr` workflow.
