@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Removed: deprecated `lint` and `test` callable workflows.
+- Fixed: `call-lint` and `call-test` workflows to respect auto caching since `actions/setup-node@v5.0.0`.
 
 ## 0.3.1 - 2025-10-03
 

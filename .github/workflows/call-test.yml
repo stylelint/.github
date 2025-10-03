@@ -86,7 +86,6 @@ jobs:
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version: ${{ matrix.node-version }}
-          cache: npm
 
       - name: Set up Node.js from ${{ inputs.node-version-file }} file
         if: ${{ inputs.node-version-file }}
@@ -94,7 +93,6 @@ jobs:
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version-file: ${{ inputs.node-version-file }}
-          cache: npm
 
       - name: Detect Node.js version
         id: node-version
