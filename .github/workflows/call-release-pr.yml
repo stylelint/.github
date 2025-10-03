@@ -63,6 +63,9 @@ jobs:
         env:
           NEW_VERSION: ${{ inputs.new-version }}
           NEW_VERSION_COMMAND: ${{ inputs.new-version-command }}
+          # Set the environment variables below for `new-version-command` that needs any GitHub token.
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           # Set a new version if a command is provided
           if [[ -n "${NEW_VERSION_COMMAND}" ]]; then
