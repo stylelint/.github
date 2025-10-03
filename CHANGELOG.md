@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fixed: incorrect `new-version`/`new-version-command` input references in `call-release-pr` workflow.
+
 ## 0.3.0 - 2025-10-01
 
 - Added: `new-version-command` input to `call-release-pr` workflow.
