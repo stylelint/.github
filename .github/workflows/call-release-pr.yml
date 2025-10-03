@@ -61,8 +61,8 @@ jobs:
       - name: Bump version in package.json
         id: bump-version
         env:
-          NEW_VERSION: ${{ github.event.inputs.new-version }}
-          NEW_VERSION_COMMAND: ${{ github.event.inputs.new-version-command }}
+          NEW_VERSION: ${{ inputs.new-version }}
+          NEW_VERSION_COMMAND: ${{ inputs.new-version-command }}
         run: |
           # Set a new version if a command is provided
           if [[ -n "${NEW_VERSION_COMMAND}" ]]; then
