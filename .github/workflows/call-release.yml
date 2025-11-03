@@ -77,7 +77,7 @@ jobs:
           echo "::notice::Published https://www.npmjs.com/package/${package_name}"
 
       - name: Create GitHub release
-        uses: stylelint/changelog-to-github-release-action@8526eab6046b8f5b2f883844d953b5eb6f80e674 # 0.5.1
+        uses: stylelint/changelog-to-github-release-action@027dd126c5e8e27e2d7f436872be1f4d0663c347 # 0.5.2
         with:
           tag: ${{ steps.get-version.outputs.version }}
           draft: true
