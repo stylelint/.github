@@ -13,6 +13,12 @@ on:
         required: false
         default: 'lts/*'
         type: string
+    secrets:
+      # NOTE: If publishing via OIDC is available, this secret may not be required.
+      # Ref https://github.com/microsoft/vscode-vsce/issues/1133
+      VSCE_PAT:
+        description: Personal Access Token for publishing to Visual Studio Marketplace
+        required: false
 
 jobs:
   release:
@@ -71,6 +77,8 @@ jobs:
 
       - name: Publish to npm registry
         if: ${{ inputs.publish }}
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
         run: |
           npm publish
           package_name=$(jq -r '.name' package.json)
