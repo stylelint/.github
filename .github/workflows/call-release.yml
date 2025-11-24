@@ -4,14 +4,14 @@ on:
   workflow_call:
     inputs:
       publish:
-        description: Set true if publishing to npm registry
+        description: If true, run the publishing step
         required: false
         default: true
         type: boolean
-      publish-run-script:
-        description: If true, run `npm run publish` instead of `npm publish`
+      publish-npm:
+        description: If true, publish to npm registry via `npm publish`. If false, run `npm run publish` instead.
         required: false
-        default: false
+        default: true
         type: boolean
       node-version:
         description: Node.js version
@@ -83,16 +83,16 @@ jobs:
       - name: Publish to npm registry
         if: ${{ inputs.publish }}
         env:
-          PUBLISH_RUN_SCRIPT: ${{ inputs.publish-run-script }}
+          PUBLISH_NPM: ${{ inputs.publish-npm }}
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
         run: |
-          if [[ "${PUBLISH_RUN_SCRIPT}" == "true" ]]; then
-            npm run publish
-          else
+          if [[ "${PUBLISH_NPM}" == "true" ]]; then
             npm publish
+            package_name=$(jq -r '.name' package.json)
+            echo "::notice::Published https://www.npmjs.com/package/${package_name}"
+          else
+            npm run publish
           fi
-          package_name=$(jq -r '.name' package.json)
-          echo "::notice::Published https://www.npmjs.com/package/${package_name}"
 
       - name: Create GitHub release
         uses: stylelint/changelog-to-github-release-action@027dd126c5e8e27e2d7f436872be1f4d0663c347 # 0.5.2
