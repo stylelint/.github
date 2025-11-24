@@ -8,6 +8,11 @@ on:
         required: false
         default: true
         type: boolean
+      publish-run-script:
+        description: If true, run `npm run publish` instead of `npm publish`
+        required: false
+        default: false
+        type: boolean
       node-version:
         description: Node.js version
         required: false
@@ -78,9 +83,14 @@ jobs:
       - name: Publish to npm registry
         if: ${{ inputs.publish }}
         env:
+          PUBLISH_RUN_SCRIPT: ${{ inputs.publish-run-script }}
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
         run: |
-          npm publish
+          if [[ "${PUBLISH_RUN_SCRIPT}" == "true" ]]; then
+            npm run publish
+          else
+            npm publish
+          fi
           package_name=$(jq -r '.name' package.json)
           echo "::notice::Published https://www.npmjs.com/package/${package_name}"
 
