@@ -16,6 +16,10 @@ on:
         required: false
         default: 'lts/*'
         type: string
+      published-url:
+        description: URL where the package will be published. By default, a npm package URL is constructed.
+        required: false
+        type: string
 
 jobs:
   release-pr:
@@ -94,6 +98,7 @@ jobs:
           PKG_VERSION: ${{ steps.bump-version.outputs.pkg-version }}
           PKG_NAME: ${{ steps.bump-version.outputs.pkg-name }}
           PKG_PRIVATE: ${{ steps.bump-version.outputs.pkg-private }}
+          PUBLISHED_URL: ${{ inputs.published-url }}
         run: |
           # Configure git
           git config user.name "${GITHUB_ACTOR}"
@@ -118,14 +123,16 @@ jobs:
           CHANGES_URL="<${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/${CHANGES_FROM}...${BRANCH_NAME}>"
           echo "${CHANGES_URL}"
 
-          # Construct a npm package URL if it is not private
-          echo -n "Constructing a npm package URL... "
-          if [[ "${PKG_PRIVATE}" != "true" ]]; then
-            NPM_PACKAGE_URL="[\`${PKG_NAME}\`](https://www.npmjs.com/package/${PKG_NAME})"
-          else
-            NPM_PACKAGE_URL="N/A"
+          # Construct a published URL if it is not provided
+          if [[ -z "${PUBLISHED_URL}" ]]; then
+            echo -n "Constructing a published URL... "
+            if [[ "${PKG_PRIVATE}" != "true" ]]; then
+              PUBLISHED_URL="[\`${PKG_NAME}\`](https://www.npmjs.com/package/${PKG_NAME})"
+            else
+              PUBLISHED_URL="N/A"
+            fi
           fi
-          echo "${NPM_PACKAGE_URL}"
+          echo "${PUBLISHED_URL}"
 
           # Prepare PR body
           PR_BODY_FILE="${RUNNER_TEMP}/pr_body.txt"
@@ -133,7 +140,7 @@ jobs:
           This PR prepares the release of **${PKG_VERSION}**.
 
           - Changes: ${CHANGES_URL}
-          - npm package: ${NPM_PACKAGE_URL}
+          - Published URL: ${PUBLISHED_URL}
 
           Checklist:
           - [ ] Quickly review the changes on the URL above.

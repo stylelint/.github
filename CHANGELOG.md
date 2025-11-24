@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Added: `published-url` input to `call-release-pr` workflow.
+
 ## 0.4.0 - 2025-11-24
 
 - Removed: deprecated `lint` and `test` callable workflows.
