@@ -73,7 +73,6 @@ jobs:
         with:
           node-version: ${{ inputs.node-version }}
           registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
 
       - name: Install latest npm
         run: npm install --global npm@latest
