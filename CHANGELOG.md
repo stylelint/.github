@@ -1,8 +1,11 @@
 # Changelog
 
-## Unreleased
+## 0.4.0 - 2025-11-24
 
 - Removed: deprecated `lint` and `test` callable workflows.
+- Added: support `vscode-stylelint` publishing for `call-release` workflow.
+- Added: npm cache in `call-release` and `call-release-pr` workflows.
+- Fixed: npm package URL to include a version during `call-release` workflow.
 
 ## 0.3.1 - 2025-10-03
 
