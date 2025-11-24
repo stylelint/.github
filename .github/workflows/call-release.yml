@@ -74,7 +74,8 @@ jobs:
         run: |
           npm publish
           package_name=$(jq -r '.name' package.json)
-          echo "::notice::Published https://www.npmjs.com/package/${package_name}"
+          package_version=$(jq -r '.version' package.json)
+          echo "::notice::Published https://www.npmjs.com/package/${package_name}/v/${package_version}"
 
       - name: Create GitHub release
         uses: stylelint/changelog-to-github-release-action@027dd126c5e8e27e2d7f436872be1f4d0663c347 # 0.5.2
