@@ -82,8 +82,6 @@ jobs:
 
       - name: Publish to npm registry
         if: ${{ inputs.publish && inputs.publish-npm }}
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
         run: |
           npm publish
           package_name=$(jq -r '.name' package.json)
@@ -91,9 +89,9 @@ jobs:
 
       - name: Run non-npm publishing
         if: ${{ inputs.publish && !inputs.publish-npm }}
+        run: npm run publish
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        run: npm run publish
 
       - name: Create GitHub release
         uses: stylelint/changelog-to-github-release-action@027dd126c5e8e27e2d7f436872be1f4d0663c347 # 0.5.2
