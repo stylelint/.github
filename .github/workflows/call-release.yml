@@ -4,7 +4,12 @@ on:
   workflow_call:
     inputs:
       publish:
-        description: Set true if publishing to npm registry
+        description: If true, run the publishing step
+        required: false
+        default: true
+        type: boolean
+      publish-npm:
+        description: If true, publish to npm registry via `npm publish`. If false, run `npm run publish` instead.
         required: false
         default: true
         type: boolean
@@ -13,6 +18,12 @@ on:
         required: false
         default: 'lts/*'
         type: string
+    secrets:
+      # NOTE: If publishing via OIDC is available, this secret may not be required.
+      # Ref https://github.com/microsoft/vscode-vsce/issues/1133
+      VSCE_PAT:
+        description: Personal Access Token for publishing to Visual Studio Marketplace
+        required: false
 
 jobs:
   release:
@@ -71,12 +82,18 @@ jobs:
         run: npm ci
 
       - name: Publish to npm registry
-        if: ${{ inputs.publish }}
+        if: ${{ inputs.publish && inputs.publish-npm }}
         run: |
           npm publish
           package_name=$(jq -r '.name' package.json)
           package_version=$(jq -r '.version' package.json)
           echo "::notice::Published https://www.npmjs.com/package/${package_name}/v/${package_version}"
+
+      - name: Run non-npm publishing
+        if: ${{ inputs.publish && !inputs.publish-npm }}
+        run: npm run publish
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
 
       - name: Create GitHub release
         uses: stylelint/changelog-to-github-release-action@027dd126c5e8e27e2d7f436872be1f4d0663c347 # 0.5.2
