@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.5.0 - 2025-11-25
 
 - Added: `published-url` input to `call-release-pr` workflow.
 
