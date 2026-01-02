@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.1 - 2026-01-02
+
+- Fixed: bump `actions/checkout` to `6.0.1`.
+- Fixed: bump `actions/setup-node` to `6.1.0`.
+
 ## 0.5.0 - 2025-11-25
 
 - Added: `published-url` input to `call-release-pr` workflow.
