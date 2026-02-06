@@ -11,7 +11,7 @@ on:
       os:
         description: OS name
         required: false
-        default: ubuntu-latest
+        default: ubuntu-slim
         type: string
 
 jobs:

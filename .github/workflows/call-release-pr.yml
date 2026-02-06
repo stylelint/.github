@@ -23,7 +23,7 @@ on:
 
 jobs:
   release-pr:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
 
     permissions:
       contents: write
