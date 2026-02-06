@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.0 - 2026-02-06
+
+- Changed: `ubuntu-latest` to `ubuntu-slim` runner for cost efficiency except for testing.
+
 ## 0.5.1 - 2026-01-02
 
 - Fixed: bump `actions/checkout` to `6.0.1`.
