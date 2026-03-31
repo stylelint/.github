@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.1 - 2026-03-31
+
+- Fixed: `MODULE_NOT_FOUND` error on globally updating npm from `10.9.7` to latest.
+- Fixed: security policy document.
+
 ## 0.6.0 - 2026-02-06
 
 - Changed: `ubuntu-latest` to `ubuntu-slim` runner for cost efficiency except for testing.
