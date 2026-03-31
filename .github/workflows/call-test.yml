@@ -117,6 +117,17 @@ jobs:
         env:
           npm_version: ${{ steps.npm-version.outputs.version }}
         run: |
+          # Show the current versions to help debugging
+          echo "Current Node.js version: $(node --version)"
+          current_npm_version=$(npm --version)
+          echo "Current npm version: ${current_npm_version}"
+
+          # HACK: Avoid the issue: https://github.com/npm/cli/issues/9151
+          if [[ ${current_npm_version} == "10.9.7" ]]; then
+            npm install --global "npm@10.9.8"
+            echo "::warning::Updating npm to 10.9.8 first is required to avoid the issue: https://github.com/npm/cli/issues/9151"
+          fi
+
           npm install --global "npm@${npm_version}"
           echo "Successfully installed npm $(npm --version)"
 
