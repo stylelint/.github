@@ -96,7 +96,7 @@ jobs:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
 
       - name: Create GitHub release
-        uses: stylelint/changelog-to-github-release-action@f53276c2b6750d51185b15ceb4110a85c799b272 # 0.5.3
+        uses: stylelint/changelog-to-github-release-action@8ec5e588ff425061da55d001b375527a4efc69f1 # 0.5.4
         with:
           tag: ${{ steps.get-version.outputs.version }}
           draft: true
