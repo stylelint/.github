@@ -17,6 +17,7 @@ The following [reusable workflows](https://docs.github.com/en/actions/using-work
 - [`test`](.github/workflows/call-test.yml)
 - [`release-pr`](.github/workflows/call-release-pr.yml)
 - [`release`](.github/workflows/call-release.yml)
+- [`dependency-review`](.github/workflows/call-dependency-review.yml)
 
 Usage:
 
@@ -48,6 +49,9 @@ jobs:
     # Specify values different from the defaults.
     # with:
     #   publish: false
+
+  dependency-review:
+    uses: stylelint/.github/.github/workflows/call-dependency-review.yml@d8a0a5b9734a79a67803d47b9aa93e31252a0459 # 0.1.0
 ```
 
 ### Release workflow
