@@ -1,7 +1,7 @@
 name: CI
 
 on:
-  push:
+  pull_request:
   workflow_dispatch:
 
 permissions: read-all # Default. Each job can override this.
@@ -29,3 +29,7 @@ jobs:
     uses: ./.github/workflows/call-test.yml
     with:
       node-version-file: .node-version
+
+  dependency-review:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/call-dependency-review.yml

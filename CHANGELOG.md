@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Added: `call-dependency-review` callable workflow.
+
 ## 0.6.1 - 2026-03-31
 
 - Fixed: `MODULE_NOT_FOUND` error on globally updating npm from `10.9.7` to latest.
