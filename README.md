@@ -51,6 +51,7 @@ jobs:
     #   publish: false
 
   dependency-review:
+    if: github.event_name == 'pull_request'
     uses: stylelint/.github/.github/workflows/call-dependency-review.yml@d8a0a5b9734a79a67803d47b9aa93e31252a0459 # 0.1.0
 ```
 
