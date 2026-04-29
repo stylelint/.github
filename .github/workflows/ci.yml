@@ -29,3 +29,6 @@ jobs:
     uses: ./.github/workflows/call-test.yml
     with:
       node-version-file: .node-version
+
+  dependency-review:
+    uses: ./.github/workflows/call-dependency-review.yml
