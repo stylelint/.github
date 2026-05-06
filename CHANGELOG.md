@@ -1,6 +1,6 @@
 # Changelog
 
-## Head
+## 0.8.0 - 2026-05-06
 
 - Added: Node.js v26 to `call-test` default matrix.
 
