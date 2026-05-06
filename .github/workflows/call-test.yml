@@ -6,7 +6,8 @@ on:
       node-version:
         description: Node.js version
         required: false
-        default: '["20", "22", "24"]' # https://endoflife.date/nodejs
+        # TODO: v20 is already EOL. Drop it. Ref #105
+        default: '["20", "22", "24", "26"]' # https://nodejs.org/en/about/previous-releases
         type: string
       node-version-file:
         description: Node.js version file
