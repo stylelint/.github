@@ -1,5 +1,9 @@
 # Changelog
 
+## Head
+
+- Added: Node.js v26 to `call-test` default matrix.
+
 ## 0.7.0 - 2026-04-29
 
 - Added: `call-dependency-review` callable workflow.
