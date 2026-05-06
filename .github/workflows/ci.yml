@@ -10,6 +10,11 @@ jobs:
   lint:
     uses: ./.github/workflows/call-lint.yml
 
+  lint-node-version-file:
+    uses: ./.github/workflows/call-lint.yml
+    with:
+      node-version-file: .node-version
+
   test:
     uses: ./.github/workflows/call-test.yml
     with:
