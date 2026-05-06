@@ -27,7 +27,8 @@ jobs:
     uses: stylelint/.github/.github/workflows/call-lint.yml@d8a0a5b9734a79a67803d47b9aa93e31252a0459 # 0.1.0
     # Specify values different from the defaults.
     # with:
-    #   node-version: 18
+    #   node-version: '18'
+    #   node-version-file: .node-version
     #   os: macos-latest
 
   test:
@@ -35,6 +36,7 @@ jobs:
     # Specify values different from the defaults. Need to pass a JSON string.
     # with:
     #   node-version: '["16", "18"]'
+    #   node-version-file: .node-version
     #   os: '["ubuntu-latest", "windows-latest"]'
     #   exclude: '[{"node-version": "16", "os": "windows-latest"}]'
     #   test-options: '--foo --bar'
@@ -43,11 +45,16 @@ jobs:
     uses: stylelint/.github/.github/workflows/call-release-pr.yml@d8a0a5b9734a79a67803d47b9aa93e31252a0459 # 0.1.0
     with:
       new-version: ${{ github.event.inputs.new-version }}
+      # Specify values different from the defaults.
+      # node-version: '18'
+      # node-version-file: .node-version
 
   release:
     uses: stylelint/.github/.github/workflows/call-release.yml@d8a0a5b9734a79a67803d47b9aa93e31252a0459 # 0.1.0
     # Specify values different from the defaults.
     # with:
+    #   node-version: '18'
+    #   node-version-file: .node-version
     #   publish: false
 
   dependency-review:
