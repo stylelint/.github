@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Removed: Node.js v20 from `call-test` default matrix.
+
 ## 0.9.0 - 2026-05-06
 
 - Added: `node-version-file` input to `call-lint`/`call-release`/`call-release-pr` workflows.
