@@ -1,8 +1,9 @@
 # Changelog
 
-## Unreleased
+## 1.0.0 - 2026-06-30
 
 - Removed: Node.js v20 from `call-test` default matrix.
+- Fixed: bump `actions/dependency-review-action` to `5.0.0`.
 
 ## 0.9.0 - 2026-05-06
 
