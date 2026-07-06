@@ -20,11 +20,6 @@
 		"color": "0366d6"
 	},
 	{
-		"name": "priority: high",
-		"description": "is impactful on users",
-		"color": "ffbf11"
-	},
-	{
 		"name": "status: blocked",
 		"description": "is blocked by another issue or pr",
 		"color": "111111"
