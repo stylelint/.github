@@ -108,10 +108,13 @@ jobs:
           node_version: ${{ steps.node-version.outputs.version }}
         run: |
           case "${node_version}" in
-            v16*) echo '9' ;;
-            v18*) echo '10' ;;
-               *) echo 'latest' ;;
-          esac | xargs -I {} echo "version={}" >> "${GITHUB_OUTPUT}"
+            v16*) npm_version='9' ;;
+            v18*) npm_version='10' ;;
+            v20*) npm_version='11' ;;
+               *) npm_version='latest' ;;
+          esac
+          echo "Detected npm version: ${npm_version}"
+          echo "version=${npm_version}" >> "${GITHUB_OUTPUT}"
 
       - name: Install npm ${{ steps.npm-version.outputs.version }}
         env:
