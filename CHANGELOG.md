@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1 - 2026-07-09
+
+- Fixed: `call-test` workflow for Node.js v20 and npm v12 (falls back to npm v11).
+- Fixed: bump `actions/checkout` to `7.0.0`.
+- Fixed: bump `stylelint/changelog-to-github-release-action` to `0.5.5`.
+
 ## 1.0.0 - 2026-06-30
 
 - Removed: Node.js v20 from `call-test` default matrix.
