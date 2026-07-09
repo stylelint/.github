@@ -107,12 +107,12 @@ jobs:
         env:
           node_version: ${{ steps.node-version.outputs.version }}
         run: |
-          npm_version=$(case "${node_version}" in
-            v16*) echo '9' ;;
-            v18*) echo '10' ;;
-            v20*) echo '11' ;;
-               *) echo 'latest' ;;
-          esac)
+          case "${node_version}" in
+            v16*) npm_version='9' ;;
+            v18*) npm_version='10' ;;
+            v20*) npm_version='11' ;;
+               *) npm_version='latest' ;;
+          esac
           echo "Detected npm version: ${npm_version}"
           echo "version=${npm_version}" >> "${GITHUB_OUTPUT}"
 
