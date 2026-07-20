@@ -151,7 +151,7 @@ jobs:
           Checklist:
           - [ ] Quickly review the changes on the URL above.
           - [ ] The new version is expected.
-          - [ ] The CHANGELOG.md is expected. If necessary, update it.
+          - [ ] The CHANGELOG.md is expected. If necessary, update it (to add a summary or reorder the entries).
           - [ ] Request a review from the owners team.
 
           If the PR is approved and all checks have passed, you can merge it. Then, the release job will be automatically started.
