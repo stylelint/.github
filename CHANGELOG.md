@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.0.2 - 2026-07-20
 
 - Changed: `node-version` default from `lts/*` to `latest` for `call-lint`/`call-release`/`call-release-pr` workflows.
 
