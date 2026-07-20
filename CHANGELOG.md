@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Changed: `node-version` default from `lts/*` to `latest` for `call-lint`/`call-release`/`call-release-pr` workflows.
+
 ## 1.0.1 - 2026-07-09
 
 - Fixed: `call-test` workflow for Node.js v20 and npm v12 (falls back to npm v11).
