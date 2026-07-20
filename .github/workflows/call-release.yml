@@ -16,7 +16,7 @@ on:
       node-version:
         description: Node.js version
         required: false
-        default: 'lts/*'
+        default: latest
         type: string
       node-version-file:
         description: Node.js version file (takes priority over `node-version` if specified)
