@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0 - 2026-10-11
+
+- Added: `publish-npm-staged` input to `call-release` workflow.
+- Fixed: release PR body in `call-release-pr` workflow.
+- Fixed: bump `actions/checkout` to `7.0.1`.
+- Fixed: bump `actions/setup-node` to `7.0.0`.
+
 ## 1.1.0 - 2026-07-20
 
 - Changed: `node-version` default from `lts/*` to `latest` for `call-lint`/`call-release`/`call-release-pr` workflows.
