@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Added: `workspace` input to `call-release` workflow.
+
 ## 1.2.0 - 2026-10-11
 
 - Added: `publish-npm-staged` input to `call-release` workflow.
