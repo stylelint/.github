@@ -36,12 +36,6 @@ on:
         required: false
         default: ''
         type: string
-    secrets:
-      # NOTE: If publishing via OIDC is available, this secret may not be required.
-      # Ref https://github.com/microsoft/vscode-vsce/issues/1133
-      VSCE_PAT:
-        description: Personal Access Token for publishing to Visual Studio Marketplace
-        required: false
 
 jobs:
   release:
@@ -145,7 +139,6 @@ jobs:
         if: ${{ inputs.publish && !inputs.publish-npm }}
         env:
           NPM_CONFIG_WORKSPACE: ${{ inputs.workspace }}
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
         run: npm run publish
 
       - name: Create GitHub release
