@@ -21,6 +21,11 @@ on:
         required: false
         default: false
         type: boolean
+      workspace:
+        description: Name of the npm workspace package.
+        required: false
+        default: ''
+        type: string
       node-version:
         description: Node.js version
         required: false
@@ -67,20 +72,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Get version
-        id: get-version
-        env:
-          PR_HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
-        run: |
-          # Check if the package version matches the branch name
-          PKG_VERSION=$(jq -r '.version' package.json)
-          if [[ "${PR_HEAD_BRANCH}" == "release/${PKG_VERSION}" ]]; then
-            echo "version=${PKG_VERSION}" >> "${GITHUB_OUTPUT}"
-          else
-            echo "::error::The version '${PKG_VERSION}' in package.json does not match the version in the branch name '${PR_HEAD_BRANCH}'."
-            exit 1
-          fi
-
       - name: Set up Node.js ${{ inputs.node-version-file || inputs.node-version }}
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -92,31 +83,75 @@ jobs:
       - name: Install latest npm
         run: npm install --global npm@latest
 
+      - name: Get package info
+        id: pkg
+        env:
+          NPM_CONFIG_WORKSPACE: ${{ inputs.workspace }}
+        run: |
+          metadata=$(npm pkg get 'name' 'version' 'repository.directory' --json)
+          manifest=$(jq -c --arg 'ws' "${NPM_CONFIG_WORKSPACE}" '.[$ws] // .' <<<"${metadata}")
+          package_name=$(jq -r '.name' <<<"${manifest}")
+          package_version=$(jq -r '.version' <<<"${manifest}")
+          package_dir=$(jq -r '.["repository.directory"] // empty' <<<"${manifest}")
+
+          if [[ -z "${NPM_CONFIG_WORKSPACE}" ]]; then
+            changelog="CHANGELOG.md"
+            tag="${package_version}"
+            release=""
+          else
+            if [[ -z "${package_dir}" ]]; then
+              echo "::error::The package '${package_name}' must have the 'repository.directory' field in its package.json."
+              exit 1
+            fi
+            changelog="${package_dir}/CHANGELOG.md"
+            tag="${package_name}@${package_version}"
+            release="${package_name} ${package_version}"
+          fi
+
+          {
+            echo "name=${package_name}"
+            echo "version=${package_version}"
+            echo "tag=${tag}"
+            echo "changelog=${changelog}"
+            echo "release=${release}"
+          } >> "${GITHUB_OUTPUT}"
+
       - name: Install dependencies
         run: npm ci
+
+      # Always use `ignore-scripts=true`, so lifecycle scripts never run automatically.
+      - name: Pre-publish
+        if: ${{ inputs.publish && inputs.publish-npm }}
+        env:
+          NPM_CONFIG_WORKSPACE: ${{ inputs.workspace }}
+        run: npm run prepack --if-present
 
       - name: Publish to npm registry
         if: ${{ inputs.publish && inputs.publish-npm }}
         env:
+          NPM_CONFIG_WORKSPACE: ${{ inputs.workspace }}
           STAGED_PUBLISHING: ${{ inputs.publish-npm-staged }}
+          PACKAGE_NAME: ${{ steps.pkg.outputs.name }}
+          PACKAGE_VERSION: ${{ steps.pkg.outputs.version }}
         run: |
           if [[ "${STAGED_PUBLISHING}" == "true" ]]; then
             npm stage publish
           else
             npm publish
           fi
-          package_name=$(jq -r '.name' package.json)
-          package_version=$(jq -r '.version' package.json)
-          echo "::notice::Published https://www.npmjs.com/package/${package_name}/v/${package_version}"
+          echo "::notice::Published https://www.npmjs.com/package/${PACKAGE_NAME}/v/${PACKAGE_VERSION}"
 
       - name: Run non-npm publishing
         if: ${{ inputs.publish && !inputs.publish-npm }}
-        run: npm run publish
         env:
+          NPM_CONFIG_WORKSPACE: ${{ inputs.workspace }}
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: npm run publish
 
       - name: Create GitHub release
-        uses: stylelint/changelog-to-github-release-action@c9961ec8a66079c7a93a3805437a79750e5c3315 # 0.5.5
+        uses: stylelint/changelog-to-github-release-action@fa1228a5ad2a0089273852a32261ca1b3efda395 # 0.6.0
         with:
-          tag: ${{ steps.get-version.outputs.version }}
+          tag: ${{ steps.pkg.outputs.tag }}
+          name: ${{ steps.pkg.outputs.release }}
+          changelog: ${{ steps.pkg.outputs.changelog }}
           draft: true
