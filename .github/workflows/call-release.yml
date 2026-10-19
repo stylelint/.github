@@ -149,7 +149,7 @@ jobs:
         run: npm run publish
 
       - name: Create GitHub release
-        uses: stylelint/changelog-to-github-release-action@c9961ec8a66079c7a93a3805437a79750e5c3315 # 0.5.5
+        uses: stylelint/changelog-to-github-release-action@fa1228a5ad2a0089273852a32261ca1b3efda395 # 0.6.0
         with:
           tag: ${{ steps.pkg.outputs.tag }}
           name: ${{ steps.pkg.outputs.release }}
