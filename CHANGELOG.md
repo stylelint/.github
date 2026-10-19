@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Removed: `VSCE_PAT` secret from `call-release` workflow.
 - Added: `workspace` input to `call-release` workflow.
 
 ## 1.2.0 - 2026-10-11
