@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Added: label to release PRs in `call-release-pr` workflow.
+
 ## 1.3.0 - 2026-10-19
 
 - Removed: `VSCE_PAT` secret from `call-release` workflow (no longer used).

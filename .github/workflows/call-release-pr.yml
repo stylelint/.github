@@ -166,6 +166,7 @@ jobs:
             --head "${BRANCH_NAME}" \
             --title "${COMMIT_MESSAGE}" \
             --body-file "${PR_BODY_FILE}" \
+            --label 'pr: release' \
             --assignee "${GITHUB_ACTOR}"
 
           # Show PR URL
