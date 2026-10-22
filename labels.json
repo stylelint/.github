@@ -20,6 +20,11 @@
 		"color": "0366d6"
 	},
 	{
+		"name": "pr: release",
+		"description": "relates to a release",
+		"color": "5319e7"
+	},
+	{
 		"name": "priority: high",
 		"description": "is impactful on users",
 		"color": "ffbf11"
