@@ -4,10 +4,29 @@ Stylelint org-wide GitHub settings.
 
 ## Syncing labels
 
-You can sync our common labels to a new repository using [github-label-sync](https://github.com/Financial-Times/github-label-sync):
+### 1. Sync `labels.json` to `stylelint/.github`
 
-1. Clone this repo.
-2. Run `npx github-label-sync --access-token xxxx stylelint/<repo-name>`.
+Apply [`labels.json`](labels.json) with [`gh`](https://cli.github.com/) and [`jq`](https://jqlang.github.io/jq/):
+
+```shell
+jq -r --arg 'repo' 'stylelint/.github' \
+  '.[] | @sh "gh label create \(.name) --description \(.description) --color \(.color) --repo \($repo) --force"' \
+  labels.json \
+  | sh
+```
+
+Omit `| sh` to preview the commands. `--force` updates existing labels. Other labels are not changed or deleted.
+
+### 2. Copy labels to other repositories
+
+Copy the labels from `stylelint/.github` to every unarchived repository in the org:
+
+```shell
+gh repo list stylelint --no-archived --limit 100 --json 'nameWithOwner' --jq '.[].nameWithOwner | select(. != "stylelint/.github")' \
+  | xargs -I '{}' gh label clone 'stylelint/.github' --repo '{}' --force
+```
+
+Insert `echo` before `gh` to preview the commands. Labels that exist only in a destination repository are not changed or deleted, so this is safe to re-run.
 
 ## Reusable workflows
 
