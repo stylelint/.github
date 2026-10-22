@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Added: label to release PRs in `call-release-pr` workflow.
+- Fixed: typos and color codes in `labels.json`.
 
 ## 1.3.0 - 2026-10-19
 
