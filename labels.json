@@ -6,7 +6,7 @@
 	},
 	{
 		"name": "help wanted",
-		"description": "is likely non-trival and help is wanted",
+		"description": "is likely non-trivial and help is wanted",
 		"color": "b60205"
 	},
 	{
@@ -30,6 +30,16 @@
 		"color": "ffbf11"
 	},
 	{
+		"name": "status: agreed but held",
+		"description": "is agreed on but implementation is held",
+		"color": "617d03"
+	},
+	{
+		"name": "status: ask to implement",
+		"description": "ask before implementing as may no longer be relevant",
+		"color": "006b75"
+	},
+	{
 		"name": "status: blocked",
 		"description": "is blocked by another issue or pr",
 		"color": "111111"
@@ -47,7 +57,7 @@
 	{
 		"name": "status: needs investigation",
 		"description": "triage needs further investigation",
-		"color": "CD4404"
+		"color": "cd4404"
 	},
 	{
 		"name": "status: needs reproducible example",
@@ -60,23 +70,13 @@
 		"color": "008672"
 	},
 	{
-		"name": "status: ask to implement",
-		"description": "ask before implementing as may no longer be relevant",
-		"color": "006B75"
-	},
-	{
 		"name": "status: wip",
 		"description": "is being worked on by someone",
 		"color": "0e8a16"
 	},
 	{
-		"name": "status: agreed but held",
-		"description": "is agreed on but implementation is held",
-		"color": "617D03"
-	},
-	{
 		"name": "upstream",
 		"description": "relates to an upstream package",
-		"color": "972AC5"
+		"color": "972ac5"
 	}
 ]
