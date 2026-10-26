@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Removed: `published-url` input from `call-release-pr` workflow.
+- Changed: `call-release-pr` workflow to infer released packages from changed `package.json` files.
 - Added: label to release PRs in `call-release-pr` workflow.
 - Fixed: typos and color codes in `labels.json`.
 

@@ -21,10 +21,6 @@ on:
         required: false
         default: ''
         type: string
-      published-url:
-        description: URL where the package will be published. By default, a npm package URL is constructed.
-        required: false
-        type: string
 
 jobs:
   release-pr:
@@ -46,7 +42,7 @@ jobs:
         shell: bash
 
     outputs:
-      new-version: ${{ steps.bump-version.outputs.pkg-version }}
+      new-version: ${{ steps.create-pr.outputs.pkg-version }}
       pr-branch: ${{ steps.create-pr.outputs.pr-branch }}
       pr-url: ${{ steps.create-pr.outputs.pr-url }}
 
@@ -70,7 +66,6 @@ jobs:
         run: npm ci
 
       - name: Bump version in package.json
-        id: bump-version
         env:
           NEW_VERSION: ${{ inputs.new-version }}
           NEW_VERSION_COMMAND: ${{ inputs.new-version-command }}
@@ -90,66 +85,107 @@ jobs:
             exit 1
           fi
 
-          # Output the new version and other package info for later steps
-          cat <<EOF >> "${GITHUB_OUTPUT}"
-          pkg-version=$(jq -r '.version' package.json)
-          pkg-name=$(jq -r '.name' package.json)
-          pkg-private=$(jq -r 'select(.private == true) | "true"' package.json)
-          EOF
-
       - name: Create pull request
         id: create-pr
         env:
-          GH_TOKEN: ${{ github.token }}
-          PKG_VERSION: ${{ steps.bump-version.outputs.pkg-version }}
-          PKG_NAME: ${{ steps.bump-version.outputs.pkg-name }}
-          PKG_PRIVATE: ${{ steps.bump-version.outputs.pkg-private }}
-          PUBLISHED_URL: ${{ inputs.published-url }}
+          GITHUB_TOKEN: ${{ github.token }}
+          BASE_SHA: ${{ github.sha }}
         run: |
           # Configure git
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
 
-          # Commit and push changes to a new branch
+          PKG_VERSION=$(jq -r '.version' package.json)
+          echo "pkg-version=${PKG_VERSION}" >> "${GITHUB_OUTPUT}"
+
           BRANCH_NAME="release/${PKG_VERSION}"
           COMMIT_MESSAGE="Release ${PKG_VERSION}"
+
+          # Build the package table from changed package.json files
+          TABLE_ROWS=''
+
+          mapfile -t CHANGED_PACKAGE_JSON_FILES < <(
+            git diff --name-only --diff-filter=ACMR "${BASE_SHA}" -- ':(glob)**/package.json'
+          )
+
+          for PACKAGE_JSON in "${CHANGED_PACKAGE_JSON_FILES[@]}"; do
+            PACKAGE_NAME=$(jq -r '.name // empty' "${PACKAGE_JSON}")
+            PACKAGE_VERSION=$(jq -r '.version // empty' "${PACKAGE_JSON}")
+
+            if [[ -z "${PACKAGE_NAME}" || -z "${PACKAGE_VERSION}" ]]; then
+              echo "::error::${PACKAGE_JSON} must have both \`name\` and \`version\`."
+              exit 1
+            fi
+
+            PREVIOUS_JSON=$(git show "${BASE_SHA}:${PACKAGE_JSON}" 2>/dev/null || true)
+            PREVIOUS_VERSION=$(jq -r '.version // empty' <<< "${PREVIOUS_JSON}")
+
+            # Skip packages whose version has not changed
+            if [[ "${PACKAGE_VERSION}" == "${PREVIOUS_VERSION}" ]]; then
+              continue
+            fi
+
+            # Construct the published URL
+            PRIVATE=$(jq -r '.private // false' "${PACKAGE_JSON}")
+            VSCODE_VERSION=$(jq -r '.engines.vscode // empty' "${PACKAGE_JSON}")
+            VSCODE_PUBLISHER=$(jq -r '.publisher // empty' "${PACKAGE_JSON}")
+
+            if [[ -n "${VSCODE_VERSION}" ]]; then
+              if [[ -z "${VSCODE_PUBLISHER}" ]]; then
+                echo "::error::${PACKAGE_JSON} has \`engines.vscode\` but no \`publisher\`."
+                exit 1
+              fi
+              PACKAGE_URL="<https://marketplace.visualstudio.com/items?itemName=${VSCODE_PUBLISHER}.${PACKAGE_NAME}>"
+            elif [[ "${PRIVATE}" == "true" ]]; then
+              PACKAGE_URL='N/A'
+            else
+              PACKAGE_URL="<https://www.npmjs.com/package/${PACKAGE_NAME}>"
+            fi
+
+            # Scoped packages use `<name>@<version>` tags; others use `<version>`.
+            # A root package may be scoped but still tagged with `<version>`.
+            PREVIOUS_TAG="${PREVIOUS_VERSION}"
+
+            if [[ "${PACKAGE_NAME}" == @* ]] && git rev-parse --verify --quiet "refs/tags/${PACKAGE_NAME}@${PREVIOUS_VERSION}" > /dev/null; then
+              PREVIOUS_TAG="${PACKAGE_NAME}@${PREVIOUS_VERSION}"
+            fi
+
+            if [[ -z "${PREVIOUS_VERSION}" ]] || ! git rev-parse --verify --quiet "refs/tags/${PREVIOUS_TAG}" > /dev/null; then
+              PREVIOUS_TAG='@{1year}'
+            fi
+
+            CHANGES_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/${PREVIOUS_TAG}...${BRANCH_NAME}"
+            ROW="| \`${PACKAGE_NAME}@${PACKAGE_VERSION}\` | <${CHANGES_URL}> | ${PACKAGE_URL} |"
+
+            if [[ -z "${TABLE_ROWS}" ]]; then
+              TABLE_ROWS="${ROW}"
+            else
+              TABLE_ROWS+=$'\n'"${ROW}"
+            fi
+          done
+
+          if [[ -z "${TABLE_ROWS}" ]]; then
+            echo "::error::No package version changes found."
+            exit 1
+          fi
+
+          # Commit and push changes to a new branch
           git checkout -b "${BRANCH_NAME}"
           git commit --all -am "${COMMIT_MESSAGE}"
           git push origin "${BRANCH_NAME}"
           echo "pr-branch=${BRANCH_NAME}" >> "${GITHUB_OUTPUT}"
 
-          # Construct a changes URL
-          echo -n "Constructing a changes URL... "
-          LATEST_TAG=$(gh release list --limit 1 --json 'tagName' --jq '.[0].tagName')
-          if [[ -n "${LATEST_TAG}" ]]; then
-            CHANGES_FROM="${LATEST_TAG}"
-          else
-            CHANGES_FROM='@{1year}'
-          fi
-          CHANGES_URL="<${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/${CHANGES_FROM}...${BRANCH_NAME}>"
-          echo "${CHANGES_URL}"
-
-          # Construct a published URL if it is not provided
-          if [[ -z "${PUBLISHED_URL}" ]]; then
-            echo -n "Constructing a published URL... "
-            if [[ "${PKG_PRIVATE}" != "true" ]]; then
-              PUBLISHED_URL="[\`${PKG_NAME}\`](https://www.npmjs.com/package/${PKG_NAME})"
-            else
-              PUBLISHED_URL="N/A"
-            fi
-          fi
-          echo "${PUBLISHED_URL}"
-
           # Prepare PR body
           PR_BODY_FILE="${RUNNER_TEMP}/pr_body.txt"
           cat <<EOF > "${PR_BODY_FILE}"
-          This PR prepares the release of **${PKG_VERSION}**.
+          This PR prepares the release of the following packages:
 
-          - Changes: ${CHANGES_URL}
-          - Published URL: ${PUBLISHED_URL}
+          | Package | Changes | Published |
+          | --- | --- | --- |
+          ${TABLE_ROWS}
 
           Checklist:
-          - [ ] Quickly review the changes on the URL above.
+          - [ ] Quickly review the changes above.
           - [ ] The new version is expected.
           - [ ] The CHANGELOG.md is expected. If necessary, update it (to add a summary or reorder the entries).
           - [ ] Request a review from the owners team.
