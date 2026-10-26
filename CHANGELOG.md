@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.0.0 - 2026-10-26
 
 - Removed: `published-url` input from `call-release-pr` workflow.
 - Changed: `call-release-pr` workflow to infer released packages from changed `package.json` files.
