@@ -135,18 +135,18 @@ jobs:
                 echo "::error::${PACKAGE_JSON} has \`engines.vscode\` but no \`publisher\`."
                 exit 1
               fi
-              PACKAGE_URL="https://marketplace.visualstudio.com/items?itemName=${VSCODE_PUBLISHER}.${PACKAGE_NAME}"
+              PACKAGE_URL="<https://marketplace.visualstudio.com/items?itemName=${VSCODE_PUBLISHER}.${PACKAGE_NAME}>"
             elif [[ "${PRIVATE}" == "true" ]]; then
-              echo "Skipped the private package: ${PACKAGE_NAME}"
-              continue
+              PACKAGE_URL='N/A'
             else
-              PACKAGE_URL="https://www.npmjs.com/package/${PACKAGE_NAME}"
+              PACKAGE_URL="<https://www.npmjs.com/package/${PACKAGE_NAME}>"
             fi
 
             # Scoped packages use `<name>@<version>` tags; others use `<version>`.
+            # A root package may be scoped but still tagged with `<version>`.
             PREVIOUS_TAG="${PREVIOUS_VERSION}"
 
-            if [[ "${PACKAGE_NAME}" == @* ]]; then
+            if [[ "${PACKAGE_NAME}" == @* ]] && git rev-parse --verify --quiet "refs/tags/${PACKAGE_NAME}@${PREVIOUS_VERSION}" > /dev/null; then
               PREVIOUS_TAG="${PACKAGE_NAME}@${PREVIOUS_VERSION}"
             fi
 
@@ -154,9 +154,8 @@ jobs:
               PREVIOUS_TAG='@{1year}'
             fi
 
-            CHANGES_FROM="${PREVIOUS_TAG}"
-            CHANGES_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/${CHANGES_FROM}...${BRANCH_NAME}"
-            ROW="| \`${PACKAGE_NAME}@${PACKAGE_VERSION}\` | <${CHANGES_URL}> | <${PACKAGE_URL}> |"
+            CHANGES_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/${PREVIOUS_TAG}...${BRANCH_NAME}"
+            ROW="| \`${PACKAGE_NAME}@${PACKAGE_VERSION}\` | <${CHANGES_URL}> | ${PACKAGE_URL} |"
 
             if [[ -z "${TABLE_ROWS}" ]]; then
               TABLE_ROWS="${ROW}"
