@@ -154,8 +154,12 @@ jobs:
               PREVIOUS_TAG='@{1year}'
             fi
 
+            PREVIOUS_VERSION_LABEL='N/A'
+            if [[ -n "${PREVIOUS_VERSION}" ]]; then
+              PREVIOUS_VERSION_LABEL="\`${PREVIOUS_VERSION}\`"
+            fi
             CHANGES_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/${PREVIOUS_TAG}...${BRANCH_NAME}"
-            ROW="| \`${PACKAGE_NAME}@${PACKAGE_VERSION}\` | <${CHANGES_URL}> | ${PACKAGE_URL} |"
+            ROW="| \`${PACKAGE_NAME}\` | ${PREVIOUS_VERSION_LABEL} → \`${PACKAGE_VERSION}\` | <${CHANGES_URL}> | ${PACKAGE_URL} |"
 
             if [[ -z "${TABLE_ROWS}" ]]; then
               TABLE_ROWS="${ROW}"
@@ -180,8 +184,8 @@ jobs:
           cat <<EOF > "${PR_BODY_FILE}"
           This PR prepares the release of the following packages:
 
-          | Package | Changes | Published |
-          | --- | --- | --- |
+          | Package | Version | Changes | Published |
+          | --- | --- | --- | --- |
           ${TABLE_ROWS}
 
           Checklist:
