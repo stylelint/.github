@@ -1,5 +1,22 @@
 # Changelog
 
+## Unreleased
+
+- Fixed: `call-release-pr` workflow to escape `@` in GitHub compare link.
+
+## 2.0.0 - 2026-10-26
+
+- Removed: `published-url` input from `call-release-pr` workflow.
+- Changed: `call-release-pr` workflow to infer released packages from changed `package.json` files.
+- Added: label to release PRs in `call-release-pr` workflow.
+- Fixed: typos and color codes in `labels.json`.
+
+## 1.3.0 - 2026-10-19
+
+- Removed: `VSCE_PAT` secret from `call-release` workflow (no longer used).
+- Added: `workspace` input to `call-release` workflow.
+- Fixed: bump `actions/setup-node` to `7.1.0`.
+
 ## 1.2.0 - 2026-10-11
 
 - Added: `publish-npm-staged` input to `call-release` workflow.

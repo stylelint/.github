@@ -4,10 +4,29 @@ Stylelint org-wide GitHub settings.
 
 ## Syncing labels
 
-You can sync our common labels to a new repository using [github-label-sync](https://github.com/Financial-Times/github-label-sync):
+### 1. Sync `labels.json` to `stylelint/.github`
 
-1. Clone this repo.
-2. Run `npx github-label-sync --access-token xxxx stylelint/<repo-name>`.
+Apply [`labels.json`](labels.json) with [`gh`](https://cli.github.com/) and [`jq`](https://jqlang.github.io/jq/):
+
+```shell
+jq -r --arg 'repo' 'stylelint/.github' \
+  '.[] | @sh "gh label create \(.name) --description \(.description) --color \(.color) --repo \($repo) --force"' \
+  labels.json \
+  | sh
+```
+
+Omit `| sh` to preview the commands. `--force` updates existing labels. Other labels are not changed or deleted.
+
+### 2. Copy labels to other repositories
+
+Copy the labels from `stylelint/.github` to every unarchived repository in the org:
+
+```shell
+gh repo list stylelint --no-archived --limit 100 --json 'nameWithOwner' --jq '.[].nameWithOwner | select(. != "stylelint/.github")' \
+  | xargs -I '{}' gh label clone 'stylelint/.github' --repo '{}' --force
+```
+
+Insert `echo` before `gh` to preview the commands. Labels that exist only in a destination repository are not changed or deleted, so this is safe to re-run.
 
 ## Reusable workflows
 
@@ -68,7 +87,7 @@ To perform releasing in a repository with the shareable workflows, take the foll
 
 Prerequisites:
 
-- Must follow the release branch name pattern `release/{version}`, e.g., `release/1.0.0`.
+- Must follow the release branch name pattern `release/{something}`, e.g., `release/1.0.0`.
 - Must import the branch and tag [rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets).
 - Must set up the `npm` [environment](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments).
 
