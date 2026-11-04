@@ -11,16 +11,6 @@ on:
         description: Command to determine a new version (priority over `new-version` if specified)
         required: false
         type: string
-      node-version:
-        description: Node.js version
-        required: false
-        default: latest
-        type: string
-      node-version-file:
-        description: Node.js version file (takes priority over `node-version` if specified)
-        required: false
-        default: ''
-        type: string
 
 jobs:
   release-pr:
@@ -52,12 +42,10 @@ jobs:
         with:
           fetch-depth: 0 # Commit history may be required, such as changelog generation etc.
 
-      - name: Set up Node.js ${{ inputs.node-version-file || inputs.node-version }}
+      - name: Set up Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: ${{ case(!inputs.node-version-file, inputs.node-version, '') }}
-          node-version-file: ${{ inputs.node-version-file }}
-          cache: npm
+          node-version-file: package.json
 
       - name: Install latest npm
         run: npm install --global npm@latest
