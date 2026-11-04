@@ -158,7 +158,7 @@ jobs:
             if [[ -n "${PREVIOUS_VERSION}" ]]; then
               PREVIOUS_VERSION_LABEL="\`${PREVIOUS_VERSION}\`"
             fi
-            CHANGES_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/${PREVIOUS_TAG}...${BRANCH_NAME}"
+            CHANGES_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/${PREVIOUS_TAG//@/%40}...${BRANCH_NAME}"
             ROW="| \`${PACKAGE_NAME}\` | ${PREVIOUS_VERSION_LABEL} → \`${PACKAGE_VERSION}\` | <${CHANGES_URL}> | ${PACKAGE_URL} |"
 
             if [[ -z "${TABLE_ROWS}" ]]; then
