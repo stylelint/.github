@@ -9,17 +9,9 @@ on:
         default: true
         type: boolean
       publish-npm:
-        description: If true, publish to npm registry via `npm publish`. If false, run `npm run publish` instead.
+        description: If true, publish to npm registry via `npm stage publish`. If false, run `npm run publish` instead.
         required: false
         default: true
-        type: boolean
-      publish-npm-staged:
-        # TODO: Migrate all the packages to staged publishing, rename this input to `publish-npm`,
-        # and finally enforce the new publishing.
-        # Ref: https://docs.npmjs.com/staged-publishing
-        description: If true, use `npm stage publish` instead of `npm publish`.
-        required: false
-        default: false
         type: boolean
       workspace:
         description: Name of the npm workspace package.
@@ -124,15 +116,10 @@ jobs:
         if: ${{ inputs.publish && inputs.publish-npm }}
         env:
           NPM_CONFIG_WORKSPACE: ${{ inputs.workspace }}
-          STAGED_PUBLISHING: ${{ inputs.publish-npm-staged }}
           PACKAGE_NAME: ${{ steps.pkg.outputs.name }}
           PACKAGE_VERSION: ${{ steps.pkg.outputs.version }}
         run: |
-          if [[ "${STAGED_PUBLISHING}" == "true" ]]; then
-            npm stage publish
-          else
-            npm publish
-          fi
+          npm stage publish
           echo "::notice::Published https://www.npmjs.com/package/${PACKAGE_NAME}/v/${PACKAGE_VERSION}"
 
       - name: Run non-npm publishing

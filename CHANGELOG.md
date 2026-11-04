@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Removed: `publish-npm-staged` input from `call-release` workflow.
 - Fixed: `call-release-pr` workflow to escape `@` in GitHub compare link.
 
 ## 2.0.0 - 2026-10-26
