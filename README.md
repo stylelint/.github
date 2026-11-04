@@ -56,12 +56,12 @@ jobs:
     #   test-options: '--foo --bar'
 
   release-pr:
-    uses: stylelint/.github/.github/workflows/call-release-pr.yml@d8a0a5b9734a79a67803d47b9aa93e31252a0459 # 0.1.0
+    uses: stylelint/.github/.github/workflows/call-release-pr.yml@main
     with:
       new-version: ${{ github.event.inputs.new-version }}
-      # Specify values different from the defaults.
-      # node-version: '18'
-      # node-version-file: .node-version
+      # Or determine a new version with a command. Takes priority over `new-version`.
+      # The command must update `version` in `package.json`.
+      # new-version-command: 'npm run changeset'
 
   release:
     uses: stylelint/.github/.github/workflows/call-release.yml@d8a0a5b9734a79a67803d47b9aa93e31252a0459 # 0.1.0
