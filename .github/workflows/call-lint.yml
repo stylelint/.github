@@ -2,28 +2,10 @@ name: Lint (callable)
 
 on:
   workflow_call:
-    inputs:
-      node-version:
-        description: Node.js version
-        required: false
-        default: latest
-        type: string
-      node-version-file:
-        description: Node.js version file (takes priority over `node-version` if specified)
-        required: false
-        default: ''
-        type: string
-      os:
-        description: OS name
-        required: false
-        default: ubuntu-slim
-        type: string
 
 jobs:
   lint:
-    name: Lint on Node.js ${{ inputs.node-version-file || inputs.node-version }} and ${{ inputs.os }}
-
-    runs-on: ${{ inputs.os }}
+    runs-on: ubuntu-slim
 
     permissions:
       contents: read
@@ -38,12 +20,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Set up Node.js ${{ inputs.node-version-file || inputs.node-version }}
+      - name: Set up Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: ${{ case(!inputs.node-version-file, inputs.node-version, '') }}
-          node-version-file: ${{ inputs.node-version-file }}
-          cache: npm
+          node-version-file: package.json
 
       - name: Install latest npm
         run: npm install --global npm@latest

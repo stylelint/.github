@@ -11,5 +11,14 @@
   "devDependencies": {
     "@stylelint/prettier-config": "^4.1.0",
     "prettier": "^3.9.10"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=24"
+    },
+    "packageManager": {
+      "name": "npm"
+    }
   }
 }

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Removed: all inputs from `call-lint` workflow.
+- Changed: `call-lint` workflow to read Node.js version and `npm` cache from `package.json`.
 - Fixed: `call-release-pr` workflow to escape `@` in GitHub compare link.
 
 ## 2.0.0 - 2026-10-26
