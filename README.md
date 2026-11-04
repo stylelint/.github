@@ -43,12 +43,7 @@ Usage:
 ```yaml
 jobs:
   lint:
-    uses: stylelint/.github/.github/workflows/call-lint.yml@d8a0a5b9734a79a67803d47b9aa93e31252a0459 # 0.1.0
-    # Specify values different from the defaults.
-    # with:
-    #   node-version: '18'
-    #   node-version-file: .node-version
-    #   os: macos-latest
+    uses: stylelint/.github/.github/workflows/call-lint.yml@main
 
   test:
     uses: stylelint/.github/.github/workflows/call-test.yml@d8a0a5b9734a79a67803d47b9aa93e31252a0459 # 0.1.0
@@ -80,6 +75,9 @@ jobs:
     if: github.event_name == 'pull_request'
     uses: stylelint/.github/.github/workflows/call-dependency-review.yml@d8a0a5b9734a79a67803d47b9aa93e31252a0459 # 0.1.0
 ```
+
+> [!NOTE]
+> `@main` should be changed to a tag or SHA.
 
 ### Release workflow
 
