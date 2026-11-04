@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fixed: `call-release-pr` workflow to escape `@` in GitHub compare link.
+
 ## 2.0.0 - 2026-10-26
 
 - Removed: `published-url` input from `call-release-pr` workflow.
