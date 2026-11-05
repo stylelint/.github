@@ -4,14 +4,14 @@ on:
   workflow_call:
     inputs:
       node-version:
-        description: Node.js version
+        description: Node.js versions as a JSON array (takes priority over `node-version-file` if specified)
         required: false
-        default: '["22", "24", "26"]' # https://nodejs.org/en/about/previous-releases
+        default: ''
         type: string
       node-version-file:
         description: Node.js version file
         required: false
-        default: ''
+        default: package.json
         type: string
       os:
         description: OS name
@@ -30,38 +30,16 @@ on:
         type: string
 
 jobs:
-  # NOTE: Prevent an empty matrix if `node-version-file` is specified
-  prepare:
-    runs-on: ubuntu-slim
-    outputs:
-      node-version: ${{ steps.init-node-version.outputs.node-version }}
-    permissions: {} # disable all
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - name: Initialize "node-version" parameter
-        id: init-node-version
-        run: |
-          if [[ -n "${node_version_file}" ]]; then
-            node_version='["(skipped)"]'
-          fi
-          echo "node-version=${node_version}" >> "${GITHUB_OUTPUT}"
-        env:
-          node_version: ${{ inputs.node-version }}
-          node_version_file: ${{ inputs.node-version-file }}
-
   test:
-    needs: prepare
-
-    name: Test on Node.js ${{ inputs.node-version-file || matrix.node-version }} and ${{ matrix.os }}
+    name: Test on Node.js ${{ case(inputs.node-version != '', matrix.node-version, inputs.node-version-file) }} and ${{ matrix.os }}
 
     strategy:
       fail-fast: false
       matrix:
         # NOTE: The `strategy` property is not fully supported, so it uses `fromJson()`.
         #       For details, see https://github.community/t/reusable-workflow-with-strategy-matrix/205676/2
-        node-version: ${{ fromJson(needs.prepare.outputs.node-version) }}
+        # NOTE: Use a placeholder to avoid an empty matrix if `node-version` is not specified.
+        node-version: ${{ fromJson(inputs.node-version || '["(skipped)"]') }}
         os: ${{ fromJson(inputs.os) }}
         exclude: ${{ fromJson(inputs.exclude) }}
 
@@ -80,32 +58,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Set up Node.js ${{ matrix.node-version }}
-        if: ${{ !inputs.node-version-file }}
+      - name: Set up Node.js ${{ case(inputs.node-version != '', matrix.node-version, inputs.node-version-file) }}
         id: setup-node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
-
-      - name: Set up Node.js from ${{ inputs.node-version-file }} file
-        if: ${{ inputs.node-version-file }}
-        id: setup-node-file
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: ${{ inputs.node-version-file }}
-          cache: npm
-
-      - name: Detect Node.js version
-        id: node-version
-        run: echo "version=${node_version}" >> "${GITHUB_OUTPUT}"
-        env:
-          node_version: ${{ steps.setup-node-file.outputs.node-version || steps.setup-node.outputs.node-version }}
+          # Pass only one of them because `setup-node` warns if both are specified
+          node-version: ${{ case(inputs.node-version != '', matrix.node-version, '') }}
+          node-version-file: ${{ case(inputs.node-version == '', inputs.node-version-file, '') }}
 
       - name: Detect npm version
         id: npm-version
         env:
-          node_version: ${{ steps.node-version.outputs.version }}
+          node_version: ${{ steps.setup-node.outputs.node-version }}
         run: |
           case "${node_version}" in
             v16*) npm_version='9' ;;
