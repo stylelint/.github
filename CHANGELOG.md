@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 3.0.0 - 2026-11-05
 
 - Removed: `publish-npm-staged` input from `call-release` workflow.
 - Removed: all inputs from `call-lint` workflow.
