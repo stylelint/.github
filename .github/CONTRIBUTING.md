@@ -12,7 +12,7 @@ To help out, you can:
 
 To start coding, you'll need:
 
-- a minimum of [Node.js](https://nodejs.org/en/) v10, though we do recommend using the latest LTS release
+- a supported [Node.js](https://nodejs.org/en/) version, though we recommend the latest LTS release
 - the latest [npm](https://www.npmjs.com/)
 
 Then:
@@ -32,7 +32,4 @@ We welcome financial contributions in full transparency on our [Open Collective]
 
 Anyone can file an expense. We will "merge" the expense into the ledger if it makes sense for the development of the community. Open Collective then reimburses the person who filed the expense.
 
-You can financially support us by becoming a:
-
-- [backer](https://opencollective.com/stylelint#backer)
-- [sponsor](https://opencollective.com/stylelint#sponsor)
+You can financially support us by becoming a backer or sponsor.
