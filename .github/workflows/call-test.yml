@@ -72,8 +72,7 @@ jobs:
           node_version: ${{ steps.setup-node.outputs.node-version }}
         run: |
           case "${node_version}" in
-            v16*) npm_version='9' ;;
-            v18*) npm_version='10' ;;
+            # npm v12 drops support for Node.js v20
             v20*) npm_version='11' ;;
                *) npm_version='latest' ;;
           esac
@@ -88,12 +87,6 @@ jobs:
           echo "Current Node.js version: $(node --version)"
           current_npm_version=$(npm --version)
           echo "Current npm version: ${current_npm_version}"
-
-          # HACK: Avoid the issue: https://github.com/npm/cli/issues/9151
-          if [[ ${current_npm_version} == "10.9.7" ]]; then
-            npm install --global "npm@10.9.8"
-            echo "::warning::Updating npm to 10.9.8 first is required to avoid the issue: https://github.com/npm/cli/issues/9151"
-          fi
 
           npm install --global "npm@${npm_version}"
           echo "Successfully installed npm $(npm --version)"
