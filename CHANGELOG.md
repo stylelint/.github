@@ -7,6 +7,7 @@
 - Removed: `node-version`/`node-version-file` inputs from `call-release-pr`/`call-release` workflows.
 - Changed: `call-lint`/`call-test`/`call-release-pr`/`call-release` workflows to read Node.js version and `npm` cache from `package.json`.
 - Fixed: `call-release-pr` workflow to escape `@` in GitHub compare link.
+- Fixed: `call-test` workflow to remove outdated npm workarounds.
 
 ## 2.0.0 - 2026-10-26
 
