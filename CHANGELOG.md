@@ -5,7 +5,7 @@
 - Removed: `publish-npm-staged` input from `call-release` workflow.
 - Removed: all inputs from `call-lint` workflow.
 - Removed: `node-version`/`node-version-file` inputs from `call-release-pr` workflow.
-- Changed: `call-lint`/`call-release-pr` workflows to read Node.js version and `npm` cache from `package.json`.
+- Changed: `call-lint`/`call-test`/`call-release-pr` workflows to read Node.js version and `npm` cache from `package.json`.
 - Fixed: `call-release-pr` workflow to escape `@` in GitHub compare link.
 
 ## 2.0.0 - 2026-10-26

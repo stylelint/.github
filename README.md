@@ -46,13 +46,12 @@ jobs:
     uses: stylelint/.github/.github/workflows/call-lint.yml@main
 
   test:
-    uses: stylelint/.github/.github/workflows/call-test.yml@d8a0a5b9734a79a67803d47b9aa93e31252a0459 # 0.1.0
+    uses: stylelint/.github/.github/workflows/call-test.yml@main
     # Specify values different from the defaults. Need to pass a JSON string.
     # with:
-    #   node-version: '["16", "18"]'
-    #   node-version-file: .node-version
+    #   node-version: '["24", "26"]' # Takes priority over `node-version-file`
     #   os: '["ubuntu-latest", "windows-latest"]'
-    #   exclude: '[{"node-version": "16", "os": "windows-latest"}]'
+    #   exclude: '[{"node-version": "24", "os": "windows-latest"}]'
     #   test-options: '--foo --bar'
 
   release-pr:
