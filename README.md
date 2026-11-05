@@ -63,12 +63,12 @@ jobs:
       # new-version-command: 'npm run changeset'
 
   release:
-    uses: stylelint/.github/.github/workflows/call-release.yml@d8a0a5b9734a79a67803d47b9aa93e31252a0459 # 0.1.0
+    uses: stylelint/.github/.github/workflows/call-release.yml@main
     # Specify values different from the defaults.
     # with:
-    #   node-version: '18'
-    #   node-version-file: .node-version
     #   publish: false
+    #   publish-npm: false
+    #   workspace: '@stylelint/language-server'
 
   dependency-review:
     if: github.event_name == 'pull_request'
