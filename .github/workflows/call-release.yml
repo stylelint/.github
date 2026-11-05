@@ -18,16 +18,6 @@ on:
         required: false
         default: ''
         type: string
-      node-version:
-        description: Node.js version
-        required: false
-        default: latest
-        type: string
-      node-version-file:
-        description: Node.js version file (takes priority over `node-version` if specified)
-        required: false
-        default: ''
-        type: string
 
 jobs:
   release:
@@ -58,13 +48,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Set up Node.js ${{ inputs.node-version-file || inputs.node-version }}
+      - name: Set up Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: ${{ case(!inputs.node-version-file, inputs.node-version, '') }}
-          node-version-file: ${{ inputs.node-version-file }}
+          node-version-file: package.json
           registry-url: 'https://registry.npmjs.org'
-          cache: npm
+          package-manager-cache: false # Prevent cache poisoning from exposing credentials (e.g., OIDC tokens)
 
       - name: Install latest npm
         run: npm install --global npm@latest
